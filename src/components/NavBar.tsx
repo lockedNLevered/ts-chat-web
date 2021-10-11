@@ -23,7 +23,7 @@ function NavBar() {
 				<PrimaryButton onClick={() => router.push("/login")}>
 					Login
 				</PrimaryButton>
-				<PrimaryButton onClick={() => null}>Register</PrimaryButton>
+				<PrimaryButton onClick={() => router.push('/register')}>Register</PrimaryButton>
 			</NavAuthButtonContainer>
 		</NavContainer>
 	);

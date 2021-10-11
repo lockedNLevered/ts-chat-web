@@ -6,6 +6,7 @@ import PrimaryButton from "./Button";
 import { useMutation } from "@apollo/client";
 import {
 	LoginUserDocument,
+	RegisterUserDocument,
 	useLoginUserMutation,
 } from "../graphql/gen/generated";
 
@@ -20,6 +21,10 @@ interface Inputs {
 	password: string;
 }
 
+interface RegisterInputs extends Inputs {
+	confirmPassword: string;
+}
+
 export function LoginForm() {
 	const {
 		register,
@@ -32,7 +37,7 @@ export function LoginForm() {
 	const onSubmit: SubmitHandler<Inputs> = (formData) => {
 		loginUser({
 			variables: { username: formData.username, password: formData.password },
-		}).then(() => console.log(data))
+		}).then(() => console.log(data));
 	};
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
@@ -43,6 +48,45 @@ export function LoginForm() {
 			<InputField
 				placeholder="Password"
 				{...register("password", { required: true })}
+			/>
+			{errors.password && <span>This field is required</span>}
+			<PrimaryButton type="submit">Submit</PrimaryButton>
+		</Form>
+	);
+}
+
+export function RegisterForm() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<RegisterInputs>();
+
+	const [registerUser, { data, loading, error }] =
+		useMutation(RegisterUserDocument);
+
+	const onSubmit: SubmitHandler<RegisterInputs> = (formData) => {
+		registerUser({
+			variables: {
+				username: formData.username,
+				password: formData.password,
+				confirmPassword: formData.confirmPassword,
+			},
+		}).then(() => console.log(data));
+	};
+	return (
+		<Form onSubmit={handleSubmit(onSubmit)}>
+			<InputField
+				placeholder="Username"
+				{...register("username", { required: true })}
+			/>
+			<InputField
+				placeholder="Password"
+				{...register("password", { required: true })}
+			/>
+			<InputField
+				placeholder="Confirm Password"
+				{...register("confirmPassword", { required: true })}
 			/>
 			{errors.password && <span>This field is required</span>}
 			<PrimaryButton type="submit">Submit</PrimaryButton>

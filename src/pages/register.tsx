@@ -1,14 +1,14 @@
 import React from "react";
 import MainWrapper from "../components/MainWrapper";
 import NavBar from "../components/NavBar";
-import { LoginForm } from "../components/AuthForm";
+import { RegisterForm } from "../components/AuthForm";
 
-export default function login() {
+export default function register() {
 	return (
 		<MainWrapper>
 			<NavBar />
-			<p>Login Page</p>
-			<LoginForm />
+			<p>Register Page</p>
+			<RegisterForm />
 		</MainWrapper>
 	);
 }
