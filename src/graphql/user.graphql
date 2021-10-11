@@ -1,0 +1,32 @@
+fragment User on User {
+	id
+	username
+}
+
+mutation LoginUser($username: String!, $password: String!) {
+	loginUser(userInput: { username: $username, password: $password }) {
+		user {
+			...User
+		}
+		error
+	}
+}
+
+mutation RegisterUser(
+	$username: String!
+	$password: String!
+	$confirmPassword: String!
+) {
+	registerUser(
+		userInput: {
+			username: $username
+			password: $password
+			confirmPassword: $confirmPassword
+		}
+	) {
+		user {
+			...User
+		}
+		error
+	}
+}
