@@ -3,7 +3,8 @@ import styled from "styled-components";
 import InputField from "../components/InputField";
 import MainWrapper from "../components/MainWrapper";
 import NavBar from "../components/NavBar";
-
+import { useForm, SubmitHandler } from "react-hook-form";
+import { LoginForm } from "../components/AuthForm";
 
 
 
@@ -12,10 +13,7 @@ export default function login() {
 		<MainWrapper>
 			<NavBar />
 			<p>Login Page</p>
-
-			<InputField placeholder="Username" />
-			<InputField placeholder="Password" />
-			<InputField placeholder="Confirm Password" />
+			<LoginForm />
 		</MainWrapper>
 	);
 }

@@ -1,13 +1,14 @@
+import React from "react";
 import styled from "styled-components";
 
-interface Props {
-	placeholder: string;
-}
+type InputProps = React.HTMLAttributes<HTMLInputElement>;
 
 const InputField = styled.input`
 	border-radius: 10px;
+	padding: 0.5em;
 `;
 
-export default function Input({ placeholder }: Props) {
-	return <InputField placeholder={placeholder} />;
-}
+const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+	return <InputField ref={ref} {...props} />;
+});
+export default Input;

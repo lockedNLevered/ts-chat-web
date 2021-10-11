@@ -8,22 +8,22 @@ const NavContainer = styled.div`
 	background-color: ${({ theme }) => theme.colors.primary};
 	padding: 1em;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	border-bottom: 1px solid black;
 	width: 100vw;
+	top: 0px;
+	position: sticky;
 `;
 function NavBar() {
 	const router = useRouter();
 	return (
 		<NavContainer>
-			<p>Name</p>
+			<p>Ts-Chat</p>
 			<NavAuthButtonContainer>
-				<PrimaryButton callback={() => router.push("/login")}>
-					<p>Login</p>
+				<PrimaryButton onClick={() => router.push("/login")}>
+					Login
 				</PrimaryButton>
-				<PrimaryButton callback={() => null}>
-					<p>Register</p>
-				</PrimaryButton>
+				<PrimaryButton onClick={() => null}>Register</PrimaryButton>
 			</NavAuthButtonContainer>
 		</NavContainer>
 	);
