@@ -5,10 +5,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import PrimaryButton from "./Button";
 import { useMutation } from "@apollo/client";
 import {
+	GetMeDocument,
 	LoginUserDocument,
 	RegisterUserDocument,
-	useLoginUserMutation,
 } from "../graphql/gen/generated";
+import { useRouter } from "next/router";
 
 const Form = styled.form`
 	display: flex;
@@ -32,12 +33,18 @@ export function LoginForm() {
 		formState: { errors },
 	} = useForm<Inputs>();
 
-	const [loginUser, { data, loading, error }] = useMutation(LoginUserDocument);
-
+	const [loginUser, { data, error }] = useMutation(LoginUserDocument, {
+		refetchQueries: [GetMeDocument, "GetMe"],
+	});
+	const router = useRouter();
 	const onSubmit: SubmitHandler<Inputs> = (formData) => {
 		loginUser({
 			variables: { username: formData.username, password: formData.password },
-		}).then(() => console.log(data));
+		}).then(() => {
+			if (!error || data.loginUser.error) {
+				router.push("/");
+			}
+		});
 	};
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
@@ -62,9 +69,10 @@ export function RegisterForm() {
 		formState: { errors },
 	} = useForm<RegisterInputs>();
 
-	const [registerUser, { data, loading, error }] =
-		useMutation(RegisterUserDocument);
-
+	const [registerUser, { data, error }] = useMutation(RegisterUserDocument, {
+		refetchQueries: [GetMeDocument, "GetMe"],
+	});
+	const router = useRouter();
 	const onSubmit: SubmitHandler<RegisterInputs> = (formData) => {
 		registerUser({
 			variables: {
@@ -72,7 +80,11 @@ export function RegisterForm() {
 				password: formData.password,
 				confirmPassword: formData.confirmPassword,
 			},
-		}).then(() => console.log(data));
+		}).then(() => {
+			if (!error || data.registerUser.error) {
+				router.push("/");
+			}
+		});
 	};
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
