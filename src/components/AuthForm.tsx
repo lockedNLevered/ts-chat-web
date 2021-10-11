@@ -7,7 +7,7 @@ import PrimaryButton from "./Button";
 const Form = styled.form`
 	display: flex;
 	flex-direction: column;
-    margin: auto;
+	margin: auto;
 `;
 
 interface Inputs {
@@ -23,12 +23,12 @@ export function LoginForm() {
 		formState: { errors },
 	} = useForm<Inputs>();
 	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-    console.log(watch("username"))
+	console.log(watch("username"));
 	return (
 		<Form onSubmit={handleSubmit(onSubmit)}>
 			<InputField placeholder="Username" {...register("username")} />
 			<InputField placeholder="Password" {...register("password")} />
-            {errors.password && <span>This field is required</span>}
+			{errors.password && <span>This field is required</span>}
 			<PrimaryButton type="submit">Submit</PrimaryButton>
 		</Form>
 	);
