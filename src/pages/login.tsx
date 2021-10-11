@@ -6,8 +6,6 @@ import NavBar from "../components/NavBar";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { LoginForm } from "../components/AuthForm";
 
-
-
 export default function login() {
 	return (
 		<MainWrapper>
