@@ -30,3 +30,21 @@ mutation RegisterUser(
 		error
 	}
 }
+
+query GetUser($username: String!) {
+	getUser(username: $username) {
+		user {
+			...User
+		}
+		error
+	}
+}
+
+query GetMe {
+	getMe {
+		user {
+			...User
+		}
+		error
+	}
+}

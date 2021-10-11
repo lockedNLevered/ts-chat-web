@@ -1,5 +1,12 @@
 import type { AppProps /*, AppContext */ } from "next/app";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import {
+	ApolloClient,
+	InMemoryCache,
+	ApolloProvider,
+	useQuery,
+	gql,
+} from "@apollo/client";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -12,19 +19,24 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
 	colors: {
 		primary: "#4832a8",
-        secondary: "#b8afe0"
+		secondary: "#b8afe0",
 	},
 };
+
+const client = new ApolloClient({
+	uri: "http://localhost:4000",
+	cache: new InMemoryCache(),
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<>
+		<ApolloProvider client={client}>
 			<GlobalStyle />
 			<ThemeProvider theme={theme}>
 				<Component {...pageProps} />
 			</ThemeProvider>
-		</>
+		</ApolloProvider>
 	);
 }
-
 
 export default MyApp;
