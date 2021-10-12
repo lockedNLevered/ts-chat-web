@@ -12,12 +12,35 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  body: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  sender: User;
+  senderId: Scalars['String'];
+};
+
+export type MessageResponse = {
+  __typename?: 'MessageResponse';
+  error?: Maybe<Scalars['String']>;
+  message?: Maybe<Message>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createMessage: MessageResponse;
   loginUser: UserResponse;
   registerUser: UserResponse;
+};
+
+
+export type MutationCreateMessageArgs = {
+  body: Scalars['String'];
 };
 
 
@@ -47,9 +70,16 @@ export type RegisterInput = {
   username: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  newMessage: Message;
+};
+
 export type User = {
   __typename?: 'User';
+  createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
+  sentMessages: Array<Message>;
   username: Scalars['String'];
 };
 
@@ -65,6 +95,20 @@ export type UserResponse = {
 };
 
 export type UserFragment = { __typename?: 'User', id: string, username: string };
+
+export type MessageFragment = { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined };
+
+export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } };
+
+export type CreateMessageMutationVariables = Exact<{
+  body: Scalars['String'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', message?: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } | null | undefined } };
 
 export type LoginUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -101,6 +145,86 @@ export const UserFragmentDoc = gql`
   username
 }
     `;
+export const MessageFragmentDoc = gql`
+    fragment Message on Message {
+  id
+  body
+  createdAt
+}
+    `;
+export const NewMessageDocument = gql`
+    subscription NewMessage {
+  newMessage {
+    id
+    body
+    createdAt
+    sender {
+      ...User
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewMessageSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, options);
+      }
+export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
+export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($body: String!) {
+  createMessage(body: $body) {
+    message {
+      ...Message
+      sender {
+        ...User
+      }
+    }
+  }
+}
+    ${MessageFragmentDoc}
+${UserFragmentDoc}`;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($username: String!, $password: String!) {
   loginUser(userInput: {username: $username, password: $password}) {

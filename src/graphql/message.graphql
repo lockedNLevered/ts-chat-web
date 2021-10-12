@@ -1,0 +1,31 @@
+fragment User on User {
+	id
+	username
+}
+
+fragment Message on Message {
+	id
+	body
+	createdAt
+}
+subscription NewMessage {
+	newMessage {
+		id
+		body
+		createdAt
+		sender {
+			...User
+		}
+	}
+}
+
+mutation CreateMessage($body: String!) {
+	createMessage(body: $body) {
+		message {
+			...Message
+			sender {
+				...User
+			}
+		}
+	}
+}

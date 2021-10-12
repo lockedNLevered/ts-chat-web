@@ -41,7 +41,7 @@ export function LoginForm() {
 		loginUser({
 			variables: { username: formData.username, password: formData.password },
 		}).then(() => {
-			if (!error || data.loginUser.error) {
+			if (!error && !data.loginUser.error) {
 				router.push("/");
 			}
 		});
@@ -81,7 +81,7 @@ export function RegisterForm() {
 				confirmPassword: formData.confirmPassword,
 			},
 		}).then(() => {
-			if (!error || data.registerUser.error) {
+			if (!error && !data.loginUser.error) {
 				router.push("/");
 			}
 		});
