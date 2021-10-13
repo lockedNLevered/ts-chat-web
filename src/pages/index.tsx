@@ -14,7 +14,7 @@ import {
 import InputField from "../components/InputField";
 import { useForm, SubmitHandler } from "react-hook-form";
 import PrimaryButton from "../components/Button";
-import RenderChat from "../components/RenderChat";
+import ChatCard from "../components/ChatCard";
 
 interface Inputs {
 	body: string;
@@ -43,7 +43,7 @@ function HomePage() {
 				const newMessage = subscriptionData.data.newMessage;
 				return Object.assign({}, prev, {
 					getAllMessages: {
-						allMessages: [...prev.getAllMessages.allMessages, newMessage],
+						messages: [...prev.getAllMessages.messages, newMessage],
 					},
 				});
 			},
@@ -55,7 +55,7 @@ function HomePage() {
 			<NavBar />
 			<p>hello lets chat</p>
 			{!result.loading ? (
-				<RenderChat messages={result.data.getAllMessages.allMessages} />
+				<ChatCard messages={result.data.getAllMessages.messages} />
 			) : (
 				<p>...loading</p>
 			)}

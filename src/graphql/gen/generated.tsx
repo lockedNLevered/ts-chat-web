@@ -18,8 +18,8 @@ export type Scalars = {
 
 export type AllMessageResponse = {
   __typename?: 'AllMessageResponse';
-  allMessages?: Maybe<Array<Message>>;
   error?: Maybe<Scalars['String']>;
+  messages?: Maybe<Array<Message>>;
 };
 
 export type Message = {
@@ -120,7 +120,7 @@ export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { 
 export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', allMessages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', messages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
 
 export type LoginUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -239,7 +239,7 @@ export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMess
 export const GetAllMessagesDocument = gql`
     query GetAllMessages {
   getAllMessages {
-    allMessages {
+    messages {
       ...Message
       sender {
         ...User

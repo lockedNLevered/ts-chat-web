@@ -30,7 +30,7 @@ mutation CreateMessage($body: String!) {
 
 query GetAllMessages {
 	getAllMessages {
-		allMessages {
+		messages {
 			...Message
 			sender {
 				...User
