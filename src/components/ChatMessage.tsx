@@ -11,14 +11,16 @@ interface Props
 
 const MessageOutline = styled.div`
 	border: 1px solid black;
+	border-radius: 15px;
 	padding: 0.25 1em;
 	display: flex;
 	flex-direction: column;
+	scroll-snap-align: end;
 `;
 
 export default function ChatMessage({ message }: Props) {
 	return (
-		<MessageOutline key={message.id}>
+		<MessageOutline>
 			<p>{message.body}</p>
 			<p>{message.sender.username}</p>
 		</MessageOutline>

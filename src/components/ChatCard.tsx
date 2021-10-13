@@ -7,17 +7,28 @@ import {
 	NewMessageDocument,
 } from "../graphql/gen/generated";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
 
 const Card = styled.div`
-	height: 100vh;
+	height: 80vh;
 	overflow-y: scroll;
-	border: 1px solid black;
-	border-radius: 12px;
+
 	padding: 2em;
+	overscroll-behavior-y: contain;
+	scroll-snap-type: y proximity;
+	display: flex;
+	flex-direction: column;
+`;
+
+const ChatForm = styled.form`
+	scroll-snap-align: end;
+	padding: 2em;
+	display: flex;
+	flex-direction: row;
+	width: 100;
 `;
 interface Inputs {
 	body: string;
@@ -29,6 +40,7 @@ export default function ChatCard() {
 			limit: 15,
 		},
 	});
+
 	const [createMessage, {}] = useMutation(CreateMessageDocument);
 	const {
 		register,
@@ -42,6 +54,7 @@ export default function ChatCard() {
 				body: eventData.body,
 			},
 		});
+
 	useEffect(() => {
 		subscribeToMore({
 			document: NewMessageDocument,
@@ -57,19 +70,20 @@ export default function ChatCard() {
 		});
 	}, []);
 	return (
-		<Card>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<InputField {...register("body")} />
-				<PrimaryButton type="submit">Submit</PrimaryButton>
-			</form>
-
+		<Card id="chat-card">
 			{!result.loading ? (
-				result.data.getAllMessages.messages.map((message: Message) => (
-					<ChatMessage message={message} />
-				))
+				result.data.getAllMessages.messages.map(
+					(message: Message, key: number) => (
+						<ChatMessage message={message} key={key} />
+					)
+				)
 			) : (
 				<p>loading</p>
 			)}
+			<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
+				<InputField {...register("body")} />
+				<PrimaryButton type="submit">Submit</PrimaryButton>
+			</ChatForm>
 		</Card>
 	);
 }

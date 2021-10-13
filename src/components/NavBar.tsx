@@ -6,15 +6,13 @@ import { GetMeDocument } from "../graphql/gen/generated";
 import { useQuery } from "@apollo/client";
 const NavContainer = styled.div`
 	color: white;
-
 	background-color: ${({ theme }) => theme.colors.primary};
 	padding: 1em;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	border-bottom: 1px solid black;
 	width: 100%;
 	top: 0px;
-	position: sticky;
 `;
 function NavBar() {
 	const router = useRouter();

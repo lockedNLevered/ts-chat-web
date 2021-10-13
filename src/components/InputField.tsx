@@ -9,6 +9,6 @@ const InputField = styled.input`
 `;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-	return <InputField ref={ref} {...props} />;
+	return <InputField ref={ref} placeholder="Lets chat" {...props} />;
 });
 export default Input;

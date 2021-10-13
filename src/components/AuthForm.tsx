@@ -33,7 +33,7 @@ export function LoginForm() {
 		formState: { errors },
 	} = useForm<Inputs>();
 
-	const [loginUser, { data, error }] = useMutation(LoginUserDocument, {
+	const [loginUser, { data, error, loading }] = useMutation(LoginUserDocument, {
 		refetchQueries: [GetMeDocument, "GetMe"],
 	});
 	const router = useRouter();
@@ -41,8 +41,8 @@ export function LoginForm() {
 		loginUser({
 			variables: { username: formData.username, password: formData.password },
 		}).then(() => {
-			if (!error && !data.loginUser.error) {
-				router.push("/");
+			if (!loading) {
+				if (!error && !data.loginUser.error) router.push("/");
 			}
 		});
 	};
@@ -69,9 +69,12 @@ export function RegisterForm() {
 		formState: { errors },
 	} = useForm<RegisterInputs>();
 
-	const [registerUser, { data, error }] = useMutation(RegisterUserDocument, {
-		refetchQueries: [GetMeDocument, "GetMe"],
-	});
+	const [registerUser, { data, error, loading }] = useMutation(
+		RegisterUserDocument,
+		{
+			refetchQueries: [GetMeDocument, "GetMe"],
+		}
+	);
 	const router = useRouter();
 	const onSubmit: SubmitHandler<RegisterInputs> = (formData) => {
 		registerUser({
@@ -81,8 +84,8 @@ export function RegisterForm() {
 				confirmPassword: formData.confirmPassword,
 			},
 		}).then(() => {
-			if (!error && !data.loginUser.error) {
-				router.push("/");
+			if (!loading) {
+				if (!error && !data.registerUser.error) router.push("/");
 			}
 		});
 	};
