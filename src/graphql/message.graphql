@@ -28,8 +28,8 @@ mutation CreateMessage($body: String!) {
 	}
 }
 
-query GetAllMessages {
-	getAllMessages {
+query GetAllMessages($limit: Int!, $offset: Int!) {
+	getAllMessages(offsetPagination: { limit: $limit, offset: $offset }) {
 		messages {
 			...Message
 			sender {

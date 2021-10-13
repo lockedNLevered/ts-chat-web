@@ -21,7 +21,12 @@ interface Inputs {
 }
 
 function HomePage() {
-	const { subscribeToMore, ...result } = useQuery(GetAllMessagesDocument);
+	const { subscribeToMore, ...result } = useQuery(GetAllMessagesDocument, {
+		variables: {
+			offset: 0,
+			limit: 15,
+		},
+	});
 	const [createMessage, {}] = useMutation(CreateMessageDocument);
 	const {
 		register,

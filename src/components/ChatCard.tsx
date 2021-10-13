@@ -1,13 +1,15 @@
-// temp component for testing output of subscription
-
-import { useEffect } from "react";
+import styled from "styled-components";
 import { Message } from "../graphql/gen/generated";
 
 interface Props {
 	messages: Message[];
 }
 
-export default function RenderChat({ messages }: Props) {
+const Card = styled.div`
+
+`
+
+export default function ChatCard({ messages }: Props) {
 	return (
 		<>
 			{" "}

@@ -59,11 +59,21 @@ export type MutationRegisterUserArgs = {
   userInput: RegisterInput;
 };
 
+export type OffsetPagination = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   getAllMessages: AllMessageResponse;
   getMe: UserResponse;
   getUser: UserResponse;
+};
+
+
+export type QueryGetAllMessagesArgs = {
+  offsetPagination: OffsetPagination;
 };
 
 
@@ -117,7 +127,10 @@ export type CreateMessageMutationVariables = Exact<{
 
 export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', message?: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } | null | undefined } };
 
-export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllMessagesQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+}>;
 
 
 export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', messages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
@@ -237,8 +250,8 @@ export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessage
 export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const GetAllMessagesDocument = gql`
-    query GetAllMessages {
-  getAllMessages {
+    query GetAllMessages($limit: Int!, $offset: Int!) {
+  getAllMessages(offsetPagination: {limit: $limit, offset: $offset}) {
     messages {
       ...Message
       sender {
@@ -262,10 +275,12 @@ ${UserFragmentDoc}`;
  * @example
  * const { data, loading, error } = useGetAllMessagesQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetAllMessagesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+export function useGetAllMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
       }
