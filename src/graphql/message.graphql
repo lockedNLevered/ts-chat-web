@@ -10,9 +10,7 @@ fragment Message on Message {
 }
 subscription NewMessage {
 	newMessage {
-		id
-		body
-		createdAt
+		...Message
 		sender {
 			...User
 		}
@@ -22,6 +20,17 @@ subscription NewMessage {
 mutation CreateMessage($body: String!) {
 	createMessage(body: $body) {
 		message {
+			...Message
+			sender {
+				...User
+			}
+		}
+	}
+}
+
+query GetAllMessages {
+	getAllMessages {
+		allMessages {
 			...Message
 			sender {
 				...User

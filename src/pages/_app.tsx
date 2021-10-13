@@ -1,13 +1,8 @@
 import type { AppProps /*, AppContext */ } from "next/app";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import {
-	ApolloClient,
-	InMemoryCache,
-	ApolloProvider,
-	useQuery,
-	gql,
-	createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { client } from "../client";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -25,12 +20,6 @@ const theme = {
 };
 
 
-
-export const client = new ApolloClient({
-	uri: "http://localhost:4000/graphql",
-	cache: new InMemoryCache(),
-	credentials: "include"
-});
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (

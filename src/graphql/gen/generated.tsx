@@ -16,6 +16,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AllMessageResponse = {
+  __typename?: 'AllMessageResponse';
+  allMessages?: Maybe<Array<Message>>;
+  error?: Maybe<Scalars['String']>;
+};
+
 export type Message = {
   __typename?: 'Message';
   body: Scalars['String'];
@@ -55,6 +61,7 @@ export type MutationRegisterUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllMessages: AllMessageResponse;
   getMe: UserResponse;
   getUser: UserResponse;
 };
@@ -110,6 +117,11 @@ export type CreateMessageMutationVariables = Exact<{
 
 export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', message?: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } | null | undefined } };
 
+export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', allMessages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
+
 export type LoginUserMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -155,15 +167,14 @@ export const MessageFragmentDoc = gql`
 export const NewMessageDocument = gql`
     subscription NewMessage {
   newMessage {
-    id
-    body
-    createdAt
+    ...Message
     sender {
       ...User
     }
   }
 }
-    ${UserFragmentDoc}`;
+    ${MessageFragmentDoc}
+${UserFragmentDoc}`;
 
 /**
  * __useNewMessageSubscription__
@@ -225,6 +236,46 @@ export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
 export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const GetAllMessagesDocument = gql`
+    query GetAllMessages {
+  getAllMessages {
+    allMessages {
+      ...Message
+      sender {
+        ...User
+      }
+    }
+  }
+}
+    ${MessageFragmentDoc}
+${UserFragmentDoc}`;
+
+/**
+ * __useGetAllMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetAllMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMessagesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
+      }
+export function useGetAllMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
+        }
+export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQuery>;
+export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
+export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($username: String!, $password: String!) {
   loginUser(userInput: {username: $username, password: $password}) {
