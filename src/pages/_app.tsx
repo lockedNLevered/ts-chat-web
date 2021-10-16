@@ -1,7 +1,6 @@
-import type { AppProps /*, AppContext */ } from "next/app";
+import type { AppProps } from "next/app";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { WebSocketLink } from "@apollo/client/link/ws";
+import { ApolloProvider } from "@apollo/client";
 import { client } from "../client";
 
 const GlobalStyle = createGlobalStyle`
@@ -16,10 +15,9 @@ const theme = {
 	colors: {
 		primary: "#4832a8",
 		secondary: "#b8afe0",
+		fontWhite: "#EEE8E8",
 	},
 };
-
-
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (

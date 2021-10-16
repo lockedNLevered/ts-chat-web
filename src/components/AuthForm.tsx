@@ -42,7 +42,7 @@ export function LoginForm() {
 			variables: { username: formData.username, password: formData.password },
 		}).then(() => {
 			if (!loading) {
-				if (!error && !data.loginUser.error) router.push("/");
+				if (!error) router.push("/");
 			}
 		});
 	};
