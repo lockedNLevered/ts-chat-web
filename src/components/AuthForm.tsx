@@ -10,7 +10,6 @@ import {
 	RegisterUserDocument,
 } from "../graphql/gen/generated";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 import { addUser } from "../helpers/userSlice";
 import { useAppDispatch } from "../helpers/hooks";
 
@@ -78,11 +77,20 @@ export function RegisterForm() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<RegisterInputs>();
-
-	const [registerUser, { data, error, loading }] = useMutation(
+	const dispatch = useAppDispatch();
+	const [registerUser] = useMutation(
 		RegisterUserDocument,
 		{
 			refetchQueries: [GetMeDocument, "GetMe"],
+			onCompleted: (data) => {
+				dispatch(
+					addUser({
+						id: data.loginUser.user.id,
+						username: data.loginUser.user.username,
+					})
+				);
+				router.push("/");
+			},
 		}
 	);
 	const router = useRouter();
@@ -93,10 +101,6 @@ export function RegisterForm() {
 				password: formData.password,
 				confirmPassword: formData.confirmPassword,
 			},
-		}).then(() => {
-			if (!loading) {
-				if (!error && !data.registerUser.error) router.push("/");
-			}
 		});
 	};
 	return (

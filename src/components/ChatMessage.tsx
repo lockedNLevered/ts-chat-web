@@ -1,6 +1,7 @@
-import { useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { GetMeDocument, Message } from "../graphql/gen/generated";
+import { Message } from "../graphql/gen/generated";
+import { useAppSelector } from "../helpers/hooks";
+import { AppState } from "../helpers/store";
 
 interface IMessageOutline {
 	backgroundColor: string;
@@ -26,22 +27,18 @@ const MessageOutline = styled("div")<IMessageOutline>`
 `;
 
 export default function ChatMessage({ message }: Props) {
-	const { loading, data } = useQuery(GetMeDocument);
-
+	const user = useAppSelector((state: AppState) => ({
+		id: state.user.id,
+		username: state.user.username,
+	}));
 	return (
 		<>
-			{!loading ? (
-				<MessageOutline
-					backgroundColor={
-						data.getMe.user.id === message.sender.id ? "blue" : "gray"
-					}
-				>
-					<p>{message.body}</p>
-					<p>- {message.sender.username}</p>
-				</MessageOutline>
-			) : (
-				<p>Loading</p>
-			)}
+			<MessageOutline
+				backgroundColor={user.id == message.sender.id ? "blue" : "gray"}
+			>
+				<p>{message.body}</p>
+				<p>- {message.sender.username}</p>
+			</MessageOutline>
 		</>
 	);
 }
