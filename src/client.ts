@@ -30,7 +30,7 @@ const splitLink = process.browser
 			httplink
 	  )
 	: httplink;
-export const client = new ApolloClient({
+export default new ApolloClient({
 	ssrMode: true,
 	link: splitLink,
 	cache: new InMemoryCache(),

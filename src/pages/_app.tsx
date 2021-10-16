@@ -1,8 +1,9 @@
 import type { AppProps } from "next/app";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "../client";
-
+import client from "../client";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "../helpers/store";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -21,12 +22,14 @@ const theme = {
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<ApolloProvider client={client}>
-			<GlobalStyle />
-			<ThemeProvider theme={theme}>
-				<Component {...pageProps} />
-			</ThemeProvider>
-		</ApolloProvider>
+		<ReduxProvider store={store}>
+			<ApolloProvider client={client}>
+				<GlobalStyle />
+				<ThemeProvider theme={theme}>
+					<Component {...pageProps} />
+				</ThemeProvider>
+			</ApolloProvider>
+		</ReduxProvider>
 	);
 }
 

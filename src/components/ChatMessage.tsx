@@ -20,6 +20,7 @@ const MessageOutline = styled("div")<IMessageOutline>`
 	padding: 0.5em 1em;
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 	margin-top: 1em;
 	color: ${({ theme }) => theme.colors.fontWhite};
 `;
