@@ -12,22 +12,18 @@ import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
 
-const Card = styled.section`
+const Card = styled("section")`
 	height: 80vh;
+	width: 100vw;
 	overflow-y: scroll;
-	padding: 2em;
-	overscroll-behavior-y: contain;
-	scroll-snap-type: y proximity;
-	display: flex;
-	flex-direction: column;
+	scroll-snap-type: y;
 `;
 
-const ChatForm = styled.form`
-	scroll-snap-align: end;
-	padding: 2em;
+const ChatForm = styled("form")`
 	display: flex;
 	flex-direction: row;
-	width: 100;
+	width: 100%;
+	scroll-snap-align: end;
 `;
 
 const MessageWrapper = styled("div")`

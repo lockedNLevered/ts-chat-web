@@ -18,11 +18,10 @@ const MessageOutline = styled("div")<IMessageOutline>`
 	background-color: ${(props) => props.backgroundColor};
 	border: 1px solid black;
 	border-radius: 15px;
-	padding: 0.5em 1em;
 	display: flex;
 	flex-direction: column;
-	width: 100%;
 	margin-top: 1em;
+	padding: 1em 2em;
 	color: ${({ theme }) => theme.colors.fontWhite};
 `;
 
@@ -35,7 +34,9 @@ export default function ChatMessage({ message }: Props) {
 		<>
 			<MessageOutline
 				//fix type
-				backgroundColor={user.id == message.sender.id ? "blue" : "gray"}
+				backgroundColor={
+					user.id == parseInt(message.sender.id) ? "blue" : "gray"
+				}
 			>
 				<p>{message.body}</p>
 				<p>- {message.sender.username}</p>
