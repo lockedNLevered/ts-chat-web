@@ -4,6 +4,16 @@ import { ApolloProvider } from "@apollo/client";
 import client from "../client";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "../helpers/store";
+
+const theme = {
+	colors: {
+		primary: "#4832a8",
+		secondary: "#6E0EDA",
+		fontWhite: "#EEE8E8",
+		darkPrimary: "#5E5E5E",
+		darkSecondary: "#3e3e3e",
+	},
+};
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -16,14 +26,6 @@ const GlobalStyle = createGlobalStyle`
 	  color: white;
   }
 `;
-
-const theme = {
-	colors: {
-		primary: "#4832a8",
-		secondary: "#b8afe0",
-		fontWhite: "#EEE8E8",
-	},
-};
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
