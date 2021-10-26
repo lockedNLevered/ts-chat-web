@@ -6,6 +6,7 @@ function HomePage() {
 	return (
 		<MainWrapper>
 			<NavBar />
+
 			<p>hello lets chat</p>
 
 			<ChatCard />

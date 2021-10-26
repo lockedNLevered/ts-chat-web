@@ -12,10 +12,9 @@ import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
 
-const Card = styled.div`
+const Card = styled.section`
 	height: 80vh;
 	overflow-y: scroll;
-
 	padding: 2em;
 	overscroll-behavior-y: contain;
 	scroll-snap-type: y proximity;
@@ -29,6 +28,11 @@ const ChatForm = styled.form`
 	display: flex;
 	flex-direction: row;
 	width: 100;
+`;
+
+const MessageWrapper = styled("div")`
+	display: flex;
+	flex-direction: column-reverse;
 `;
 interface Inputs {
 	body: string;
@@ -63,7 +67,7 @@ export default function ChatCard() {
 				const newMessage = subscriptionData.data.newMessage;
 				return Object.assign({}, prev, {
 					getAllMessages: {
-						messages: [...prev.getAllMessages.messages, newMessage],
+						messages: [newMessage, ...prev.getAllMessages.messages],
 					},
 				});
 			},
@@ -71,15 +75,17 @@ export default function ChatCard() {
 	}, []);
 	return (
 		<Card id="chat-card">
-			{!result.loading ? (
-				result.data.getAllMessages.messages.map(
-					(message: Message, key: number) => (
-						<ChatMessage message={message} key={key} />
+			<MessageWrapper>
+				{!result.loading ? (
+					result.data.getAllMessages.messages.map(
+						(message: Message, key: number) => (
+							<ChatMessage message={message} key={key} />
+						)
 					)
-				)
-			) : (
-				<p>loading</p>
-			)}
+				) : (
+					<p>loading</p>
+				)}
+			</MessageWrapper>
 			<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
 				<InputField {...register("body")} />
 				<PrimaryButton type="submit">Submit</PrimaryButton>

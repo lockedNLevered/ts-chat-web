@@ -4,13 +4,11 @@ import NavAuthButtonContainer from "./NavAuthButtonContainer";
 import { useRouter } from "next/router";
 import { GetMeDocument, User } from "../graphql/gen/generated";
 import { useQuery } from "@apollo/client";
-import { useSelector } from "react-redux";
 import { AppState } from "../helpers/store";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
-import { useEffect } from "react";
-import userSlice, { addUser, IUser } from "../helpers/userSlice";
+import { addUser, IUser } from "../helpers/userSlice";
 
-const NavContainer = styled.div`
+const NavContainer = styled.nav`
 	color: white;
 	background-color: ${({ theme }) => theme.colors.primary};
 	padding: 1em;

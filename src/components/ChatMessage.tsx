@@ -34,10 +34,12 @@ export default function ChatMessage({ message }: Props) {
 	return (
 		<>
 			<MessageOutline
+				//fix type
 				backgroundColor={user.id == message.sender.id ? "blue" : "gray"}
 			>
 				<p>{message.body}</p>
 				<p>- {message.sender.username}</p>
+				<p>sent at: {message.createdAt}</p>
 			</MessageOutline>
 		</>
 	);
