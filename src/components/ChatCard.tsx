@@ -7,13 +7,13 @@ import {
 	NewMessageDocument,
 } from "../graphql/gen/generated";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
 
-const Card = styled("section")`
-	height: 80vh;
+const ChatWrapper = styled("section")`
+	height: 70vh;
 	width: 100vw;
 	overflow-y: scroll;
 	scroll-snap-type: y;
@@ -23,12 +23,14 @@ const ChatForm = styled("form")`
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	scroll-snap-align: end;
+	margin: 1em;
+	justify-content: center;
 `;
 
 const MessageWrapper = styled("div")`
 	display: flex;
 	flex-direction: column-reverse;
+	scroll-snap-align: end;
 `;
 interface Inputs {
 	body: string;
@@ -70,22 +72,24 @@ export default function ChatCard() {
 		});
 	}, []);
 	return (
-		<Card id="chat-card">
-			<MessageWrapper>
-				{!result.loading ? (
-					result.data.getAllMessages.messages.map(
-						(message: Message, key: number) => (
-							<ChatMessage message={message} key={key} />
+		<>
+			<ChatWrapper id="chat-wrapper">
+				<MessageWrapper>
+					{!result.loading ? (
+						result.data.getAllMessages.messages.map(
+							(message: Message, key: number) => (
+								<ChatMessage message={message} key={key} />
+							)
 						)
-					)
-				) : (
-					<p>loading</p>
-				)}
-			</MessageWrapper>
+					) : (
+						<p>loading</p>
+					)}
+				</MessageWrapper>
+			</ChatWrapper>
 			<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
 				<InputField {...register("body")} />
 				<PrimaryButton type="submit">Submit</PrimaryButton>
 			</ChatForm>
-		</Card>
+		</>
 	);
 }

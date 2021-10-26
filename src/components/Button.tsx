@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = styled.button`
+const Button = styled("button")`
 	padding: 0.5em 1em;
 	color: white;
 	border-radius: 15px;

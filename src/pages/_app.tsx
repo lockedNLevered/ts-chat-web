@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
 	overflow: hidden;
+	background-color: #5E5E5E;
+  }
+  p {
+	  color: white;
   }
 `;
 

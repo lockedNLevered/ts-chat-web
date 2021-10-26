@@ -1,11 +1,10 @@
+import React from "react";
 import styled from "styled-components";
 import { Message } from "../graphql/gen/generated";
 import { useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
+import { MessageSender } from "./MessageSender";
 
-interface IMessageOutline {
-	backgroundColor: string;
-}
 interface Props
 	extends React.DetailedHTMLProps<
 		React.HTMLAttributes<HTMLDivElement>,
@@ -14,15 +13,12 @@ interface Props
 	message: Message;
 }
 
-const MessageOutline = styled("div")<IMessageOutline>`
-	background-color: ${(props) => props.backgroundColor};
+const MessageOutline = styled("div")`
+	background-color: #3e3e3e;
 	border: 1px solid black;
-	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
-	margin-top: 1em;
 	padding: 1em 2em;
-	color: ${({ theme }) => theme.colors.fontWhite};
 `;
 
 export default function ChatMessage({ message }: Props) {
@@ -32,14 +28,15 @@ export default function ChatMessage({ message }: Props) {
 	}));
 	return (
 		<>
-			<MessageOutline
-				//fix type
-				backgroundColor={
-					user.id == parseInt(message.sender.id) ? "blue" : "gray"
-				}
-			>
+			<MessageOutline>
 				<p>{message.body}</p>
-				<p>- {message.sender.username}</p>
+
+				<MessageSender
+					color={user.id == parseInt(message.sender.id) ? "#249E4A" : "white"}
+				>
+					- {message.sender.username}
+				</MessageSender>
+
 				<p>sent at: {message.createdAt}</p>
 			</MessageOutline>
 		</>
