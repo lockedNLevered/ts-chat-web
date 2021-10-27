@@ -4,11 +4,22 @@ import styled from "styled-components";
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputField = styled.input`
-	border-radius: 10px;
-	padding: 0.5em;
-
+	border-radius: 5px;
+	min-height: 2em;
+	min-width: 80%;
+	padding: 0.5em 1em;
+	border: 2px solid transparent;
 	background-color: ${({ theme }) => theme.colors.darkSecondary};
 	color: ${({ theme }) => theme.colors.fontWhite};
+	outline: none;
+	:focus {
+		border-color: ${({ theme }) => theme.colors.effectBlue};
+		border-width: 2px;
+	}
+
+	:hover {
+		background-color: ${({ theme }) => theme.colors.lightGray};
+	}
 `;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {

@@ -44,10 +44,10 @@ function NavBar() {
 	);
 	if (!loading && data.getMe.user) {
 		navOptions = (
-			<>
+			<NavAuthButtonContainer>
 				<p>{user.username}</p>{" "}
 				<PrimaryButton onClick={() => logoutUser()}>Logout</PrimaryButton>
-			</>
+			</NavAuthButtonContainer>
 		);
 	}
 	return (

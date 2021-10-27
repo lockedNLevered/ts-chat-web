@@ -10,6 +10,9 @@ const Button = styled("button")`
 	border: 1px solid black;
 	background-color: ${({ theme }) => theme.colors.secondary};
 	margin: 0em 0.25em;
+	:hover {
+		background-color: ${({ theme }) => theme.colors.effectBlue};
+	}
 `;
 
 const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(

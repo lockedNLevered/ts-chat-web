@@ -12,6 +12,8 @@ const theme = {
 		fontWhite: "#EEE8E8",
 		darkPrimary: "#5E5E5E",
 		darkSecondary: "#3e3e3e",
+		lightGray: "#4C4C4C",
+		effectBlue: "#3925F4",
 	},
 };
 const GlobalStyle = createGlobalStyle`
@@ -22,13 +24,12 @@ const GlobalStyle = createGlobalStyle`
 	overflow: hidden;
 	background-color: #5E5E5E;
   }
-  p {
+  	p {
 	  color: white;
-  }
+  		}
+	}
 
-}
-
-}
+	}
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
