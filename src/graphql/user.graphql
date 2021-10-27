@@ -48,3 +48,7 @@ query GetMe {
 		error
 	}
 }
+
+mutation LogoutUser {
+	logoutUser
+}

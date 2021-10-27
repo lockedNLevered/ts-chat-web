@@ -17,6 +17,9 @@ const ChatWrapper = styled("section")`
 	width: 100vw;
 	overflow-y: scroll;
 	scroll-snap-type: y;
+	::-webkit-scrollbar {
+		width: 20px;
+	}
 `;
 
 const ChatForm = styled("form")`

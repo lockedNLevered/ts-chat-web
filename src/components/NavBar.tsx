@@ -2,15 +2,16 @@ import styled from "styled-components";
 import PrimaryButton from "./Button";
 import NavAuthButtonContainer from "./NavAuthButtonContainer";
 import { useRouter } from "next/router";
-import { GetMeDocument, User } from "../graphql/gen/generated";
+import { GetMeDocument, LogoutUserDocument } from "../graphql/gen/generated";
 import { useQuery } from "@apollo/client";
 import { AppState } from "../helpers/store";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { addUser, IUser } from "../helpers/userSlice";
+import { useMutation } from "@apollo/client";
 
 const NavContainer = styled.nav`
 	color: white;
-	background-color: ${({ theme }) => theme.colors.primary};
+	background-color: ${({ theme }) => theme.colors.darkSecondary};
 	padding: 1em;
 	display: flex;
 	justify-content: space-around;
@@ -21,6 +22,7 @@ const NavContainer = styled.nav`
 function NavBar() {
 	const router = useRouter();
 	const { loading, data } = useQuery(GetMeDocument);
+	const [logoutUser] = useMutation(LogoutUserDocument);
 	const dispatch = useAppDispatch();
 	const user: IUser = useAppSelector((state: AppState) => ({
 		id: state.user.id,
@@ -41,7 +43,12 @@ function NavBar() {
 		</NavAuthButtonContainer>
 	);
 	if (!loading && data.getMe.user) {
-		navOptions = <p>{user.username}</p>;
+		navOptions = (
+			<>
+				<p>{user.username}</p>{" "}
+				<PrimaryButton onClick={() => logoutUser()}>Logout</PrimaryButton>
+			</>
+		);
 	}
 	return (
 		<NavContainer>

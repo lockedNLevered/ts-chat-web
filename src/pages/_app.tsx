@@ -25,6 +25,10 @@ const GlobalStyle = createGlobalStyle`
   p {
 	  color: white;
   }
+
+}
+
+}
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
