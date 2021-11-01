@@ -7,6 +7,7 @@ fragment Message on Message {
 	id
 	body
 	createdAt
+	roomId
 }
 subscription NewMessage {
 	newMessage {
@@ -17,8 +18,8 @@ subscription NewMessage {
 	}
 }
 
-mutation CreateMessage($body: String!) {
-	createMessage(body: $body) {
+mutation CreateMessage($roomId: String!, $body: String!) {
+	createMessage(roomId: $roomId, body: $body) {
 		message {
 			...Message
 			sender {
@@ -30,6 +31,17 @@ mutation CreateMessage($body: String!) {
 
 query GetAllMessages($limit: Int!, $offset: Int!) {
 	getAllMessages(offsetPagination: { limit: $limit, offset: $offset }) {
+		messages {
+			...Message
+			sender {
+				...User
+			}
+		}
+	}
+}
+
+query GetAllMessagesForRoom($roomId: String!) {
+	getAllMessagesForRoom(roomId: $roomId) {
 		messages {
 			...Message
 			sender {

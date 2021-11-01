@@ -27,6 +27,8 @@ export type Message = {
   body: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
+  room: Room;
+  roomId: Scalars['String'];
   sender: User;
   senderId: Scalars['String'];
 };
@@ -40,6 +42,7 @@ export type MessageResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createMessage: MessageResponse;
+  createRoom: RoomResponse;
   loginUser: UserResponse;
   logoutUser: Scalars['Boolean'];
   registerUser: UserResponse;
@@ -48,6 +51,12 @@ export type Mutation = {
 
 export type MutationCreateMessageArgs = {
   body: Scalars['String'];
+  roomId: Scalars['String'];
+};
+
+
+export type MutationCreateRoomArgs = {
+  roomName: Scalars['String'];
 };
 
 
@@ -68,6 +77,7 @@ export type OffsetPagination = {
 export type Query = {
   __typename?: 'Query';
   getAllMessages: AllMessageResponse;
+  getAllMessagesForRoom: AllMessageResponse;
   getMe: UserResponse;
   getUser: UserResponse;
 };
@@ -75,6 +85,11 @@ export type Query = {
 
 export type QueryGetAllMessagesArgs = {
   offsetPagination: OffsetPagination;
+};
+
+
+export type QueryGetAllMessagesForRoomArgs = {
+  roomId: Scalars['String'];
 };
 
 
@@ -88,6 +103,22 @@ export type RegisterInput = {
   username: Scalars['String'];
 };
 
+export type Room = {
+  __typename?: 'Room';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  creater: User;
+  createrId: Scalars['String'];
+  id: Scalars['ID'];
+  messages: Array<Message>;
+  roomName: Scalars['String'];
+};
+
+export type RoomResponse = {
+  __typename?: 'RoomResponse';
+  error?: Maybe<Scalars['String']>;
+  room?: Maybe<Room>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   newMessage: Message;
@@ -96,6 +127,7 @@ export type Subscription = {
 export type User = {
   __typename?: 'User';
   createdAt?: Maybe<Scalars['DateTime']>;
+  createdRooms: Array<Room>;
   id: Scalars['ID'];
   sentMessages: Array<Message>;
   username: Scalars['String'];
@@ -114,19 +146,20 @@ export type UserResponse = {
 
 export type UserFragment = { __typename?: 'User', id: string, username: string };
 
-export type MessageFragment = { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined };
+export type MessageFragment = { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string };
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } };
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string, sender: { __typename?: 'User', id: string, username: string } } };
 
 export type CreateMessageMutationVariables = Exact<{
+  roomId: Scalars['String'];
   body: Scalars['String'];
 }>;
 
 
-export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', message?: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } } | null | undefined } };
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', message?: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string, sender: { __typename?: 'User', id: string, username: string } } | null | undefined } };
 
 export type GetAllMessagesQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -134,7 +167,14 @@ export type GetAllMessagesQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', messages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __typename?: 'AllMessageResponse', messages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
+
+export type GetAllMessagesForRoomQueryVariables = Exact<{
+  roomId: Scalars['String'];
+}>;
+
+
+export type GetAllMessagesForRoomQuery = { __typename?: 'Query', getAllMessagesForRoom: { __typename?: 'AllMessageResponse', messages?: Array<{ __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string, sender: { __typename?: 'User', id: string, username: string } }> | null | undefined } };
 
 export type LoginUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -181,6 +221,7 @@ export const MessageFragmentDoc = gql`
   id
   body
   createdAt
+  roomId
 }
     `;
 export const NewMessageDocument = gql`
@@ -217,8 +258,8 @@ export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookO
 export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
 export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;
 export const CreateMessageDocument = gql`
-    mutation CreateMessage($body: String!) {
-  createMessage(body: $body) {
+    mutation CreateMessage($roomId: String!, $body: String!) {
+  createMessage(roomId: $roomId, body: $body) {
     message {
       ...Message
       sender {
@@ -244,6 +285,7 @@ export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutat
  * @example
  * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
  *   variables: {
+ *      roomId: // value for 'roomId'
  *      body: // value for 'body'
  *   },
  * });
@@ -297,6 +339,47 @@ export function useGetAllMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQuery>;
 export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
 export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
+export const GetAllMessagesForRoomDocument = gql`
+    query GetAllMessagesForRoom($roomId: String!) {
+  getAllMessagesForRoom(roomId: $roomId) {
+    messages {
+      ...Message
+      sender {
+        ...User
+      }
+    }
+  }
+}
+    ${MessageFragmentDoc}
+${UserFragmentDoc}`;
+
+/**
+ * __useGetAllMessagesForRoomQuery__
+ *
+ * To run a query within a React component, call `useGetAllMessagesForRoomQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesForRoomQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMessagesForRoomQuery({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useGetAllMessagesForRoomQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesForRoomQuery, GetAllMessagesForRoomQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMessagesForRoomQuery, GetAllMessagesForRoomQueryVariables>(GetAllMessagesForRoomDocument, options);
+      }
+export function useGetAllMessagesForRoomLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMessagesForRoomQuery, GetAllMessagesForRoomQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMessagesForRoomQuery, GetAllMessagesForRoomQueryVariables>(GetAllMessagesForRoomDocument, options);
+        }
+export type GetAllMessagesForRoomQueryHookResult = ReturnType<typeof useGetAllMessagesForRoomQuery>;
+export type GetAllMessagesForRoomLazyQueryHookResult = ReturnType<typeof useGetAllMessagesForRoomLazyQuery>;
+export type GetAllMessagesForRoomQueryResult = Apollo.QueryResult<GetAllMessagesForRoomQuery, GetAllMessagesForRoomQueryVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($username: String!, $password: String!) {
   loginUser(userInput: {username: $username, password: $password}) {
