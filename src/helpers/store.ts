@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 import userReducer from "./userSlice";
+import roomReducer from "./manageRoomSlice";
 
 export function makeStore() {
 	return configureStore({
-		reducer: { user: userReducer },
+		reducer: { user: userReducer, room: roomReducer },
 	});
 }
 const store = makeStore();

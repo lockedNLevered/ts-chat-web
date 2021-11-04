@@ -1,13 +1,14 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import {
 	CreateMessageDocument,
 	GetAllMessagesDocument,
+	GetAllMessagesForRoomDocument,
 	Message,
 	NewMessageDocument,
 } from "../graphql/gen/generated";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
@@ -38,13 +39,20 @@ const MessageWrapper = styled("div")`
 interface Inputs {
 	body: string;
 }
-export default function ChatCard() {
-	const { subscribeToMore, ...result } = useQuery(GetAllMessagesDocument, {
-		variables: {
-			offset: 0,
-			limit: 15,
-		},
-	});
+export default function ChatCard({ roomId }: { roomId: string }) {
+	const [allMessages, { subscribeToMore, ...allMessageResult }] = useLazyQuery(
+		GetAllMessagesDocument
+	);
+	const [roomMessages, { ...roomResult }] = useLazyQuery(
+		GetAllMessagesForRoomDocument,
+		{
+			variables: {
+				roomId: roomId,
+			},
+		}
+	);
+	const [queryResult, setQueryResult] = useState<any>();
+	const [messages, setMessages] = useState<any>();
 
 	const [createMessage, {}] = useMutation(CreateMessageDocument);
 	const {
@@ -52,37 +60,51 @@ export default function ChatCard() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (eventData) =>
-		createMessage({
-			variables: {
-				body: eventData.body,
-			},
-		});
-
+	const onSubmit: SubmitHandler<Inputs> = (eventData) => {
+		createMessage();
+	};
 	useEffect(() => {
-		subscribeToMore({
-			document: NewMessageDocument,
-			updateQuery: (prev, { subscriptionData }) => {
-				if (!subscriptionData.data) return prev;
-				const newMessage = subscriptionData.data.newMessage;
-				return Object.assign({}, prev, {
-					getAllMessages: {
-						messages: [newMessage, ...prev.getAllMessages.messages],
-					},
-				});
-			},
-		});
+		console.log(roomId);
+		if (roomId === "0") {
+			console.log("hi");
+			allMessages();
+			setQueryResult(allMessageResult);
+			setMessages(allMessageResult.data.getAllMessages);
+		} else {
+			console.log(roomId);
+			console.log(roomResult);
+			roomMessages({
+				variables: {
+					roomId: roomId,
+				},
+			});
+			setQueryResult(roomResult);
+			setMessages(roomResult.data.getAllMessagesForRoom);
+		}
+
+		// subscribeToMore({
+		// 	document: NewMessageDocument,
+		// 	updateQuery: (prev, { subscriptionData }) => {
+		// 		if (!subscriptionData.data) return prev;
+		// 		const newMessage = subscriptionData.data.newMessage;
+		// 		return Object.assign({}, prev, {
+		// 			getAllMessages: {
+		// 				messages: [newMessage, ...prev.getAllMessages.messages],
+		// 			},
+		// 		});
+		// 	},
+		// });
+		console.log("hi");
+		console.log(queryResult);
 	}, []);
 	return (
 		<>
 			<ChatWrapper id="chat-wrapper">
 				<MessageWrapper>
-					{!result.loading ? (
-						result.data.getAllMessages.messages.map(
-							(message: Message, key: number) => (
-								<ChatMessage message={message} key={key} />
-							)
-						)
+					{queryResult ? (
+						messages.messages.map((message: Message, key: number) => (
+							<ChatMessage message={message} key={key} />
+						))
 					) : (
 						<p>loading</p>
 					)}

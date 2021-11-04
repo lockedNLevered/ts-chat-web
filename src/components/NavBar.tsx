@@ -24,6 +24,7 @@ function NavBar() {
 	const { loading, data } = useQuery(GetMeDocument);
 	const [logoutUser] = useMutation(LogoutUserDocument);
 	const dispatch = useAppDispatch();
+	
 	const user: IUser = useAppSelector((state: AppState) => ({
 		id: state.user.id,
 		username: state.user.username,
