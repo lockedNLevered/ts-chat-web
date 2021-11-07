@@ -36,6 +36,7 @@ export default function ChatMessage({ message }: Props) {
 					- {message.sender.username}
 				</MessageSender>
 				<p>sent at: {message.createdAt}</p>
+				<p>room: {message.roomId}</p>
 			</MessageOutline>
 		</>
 	);

@@ -60,7 +60,12 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 		formState: { errors },
 	} = useForm<Inputs>();
 	const onSubmit: SubmitHandler<Inputs> = (eventData) => {
-		createMessage();
+		createMessage({
+			variables: {
+				body: eventData.body,
+				roomId: roomId,
+			},
+		});
 	};
 	useEffect(() => {
 		if (roomId === "0") {

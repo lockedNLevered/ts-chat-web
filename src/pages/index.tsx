@@ -29,7 +29,7 @@ function HomePage() {
 			setCurrentRoom(room.id);
 		}
 	}, [room.id]);
-	console.log("current room is", currentRoom)
+	console.log("current room is", currentRoom);
 	return (
 		<MainWrapper>
 			<NavBar />
