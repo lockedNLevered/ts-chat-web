@@ -43,7 +43,7 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 	const [allMessages, { subscribeToMore, ...allMessageResult }] = useLazyQuery(
 		GetAllMessagesDocument
 	);
-	const [roomMessages, { ...roomResult }] = useLazyQuery(
+	const [roomMessages, roomResult] = useLazyQuery(
 		GetAllMessagesForRoomDocument,
 		{
 			variables: {
@@ -51,7 +51,6 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 			},
 		}
 	);
-	const [queryResult, setQueryResult] = useState<any>();
 	const [messages, setMessages] = useState<any>();
 
 	const [createMessage, {}] = useMutation(CreateMessageDocument);
@@ -64,24 +63,26 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 		createMessage();
 	};
 	useEffect(() => {
-		console.log(roomId);
 		if (roomId === "0") {
-			console.log("hi");
-			allMessages();
-			setQueryResult(allMessageResult);
-			setMessages(allMessageResult.data.getAllMessages);
+			allMessages({
+				variables: {
+					offset: 0,
+					limit: 15,
+				},
+			});
+			if (allMessageResult.data) {
+				setMessages(allMessageResult.data.getAllMessages);
+			}
 		} else {
-			console.log(roomId);
-			console.log(roomResult);
 			roomMessages({
 				variables: {
 					roomId: roomId,
 				},
 			});
-			setQueryResult(roomResult);
-			setMessages(roomResult.data.getAllMessagesForRoom);
+			if (roomResult.data) {
+				setMessages(roomResult.data.getAllMessagesForRoom);
+			}
 		}
-
 		// subscribeToMore({
 		// 	document: NewMessageDocument,
 		// 	updateQuery: (prev, { subscriptionData }) => {
@@ -94,14 +95,13 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 		// 		});
 		// 	},
 		// });
-		console.log("hi");
-		console.log(queryResult);
-	}, []);
+	}, [roomResult.data, allMessageResult.data, roomId]);
+	console.log(allMessageResult);
 	return (
 		<>
 			<ChatWrapper id="chat-wrapper">
 				<MessageWrapper>
-					{queryResult ? (
+					{messages ? (
 						messages.messages.map((message: Message, key: number) => (
 							<ChatMessage message={message} key={key} />
 						))

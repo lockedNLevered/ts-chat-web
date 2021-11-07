@@ -30,13 +30,11 @@ export default function ChatMessage({ message }: Props) {
 		<>
 			<MessageOutline>
 				<p>{message.body}</p>
-
 				<MessageSender
 					color={user.id == parseInt(message.sender.id) ? "#249E4A" : "white"}
 				>
 					- {message.sender.username}
 				</MessageSender>
-
 				<p>sent at: {message.createdAt}</p>
 			</MessageOutline>
 		</>

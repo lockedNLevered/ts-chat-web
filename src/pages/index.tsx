@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
 import { enterRoom } from "../helpers/manageRoomSlice";
+import { current } from "immer";
 
 function HomePage() {
 	const dispatch = useAppDispatch();
@@ -27,7 +28,8 @@ function HomePage() {
 		} else {
 			setCurrentRoom(room.id);
 		}
-	}, [handleRoom]);
+	}, [room.id]);
+	console.log("current room is", currentRoom)
 	return (
 		<MainWrapper>
 			<NavBar />
@@ -40,7 +42,7 @@ function HomePage() {
 				<p>you are in room {currentRoom}</p>
 			)}
 
-			<ChatCard roomId="9" />
+			<ChatCard roomId={currentRoom} />
 		</MainWrapper>
 	);
 }
