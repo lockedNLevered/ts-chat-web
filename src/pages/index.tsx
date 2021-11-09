@@ -13,10 +13,10 @@ function HomePage() {
 	}));
 
 	const [currentRoom, setCurrentRoom] = useState<string>("0");
-	const handleRoom = () => {
+	const handleRoom = (roomId: string) => {
 		dispatch(
 			enterRoom({
-				id: "9",
+				id: roomId,
 			})
 		);
 	};
@@ -34,14 +34,15 @@ function HomePage() {
 			<NavBar />
 
 			{currentRoom === "0" ? (
-				<button onClick={() => handleRoom()}>
-					You are in the genral chat click to enter a room
-				</button>
+				<>
+					<button onClick={() => handleRoom("9")}>enter room 9</button>
+					<button onClick={() => handleRoom("8")}>enter room 8</button>
+				</>
 			) : (
 				<p>you are in room {currentRoom}</p>
 			)}
 
-			<ChatCard roomId={currentRoom} />
+			<ChatCard roomId={room.id as string} />
 		</MainWrapper>
 	);
 }
