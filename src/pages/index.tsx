@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
 import { enterRoom } from "../helpers/manageRoomSlice";
-import { current } from "immer";
 
 function HomePage() {
 	const dispatch = useAppDispatch();

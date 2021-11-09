@@ -124,6 +124,11 @@ export type Subscription = {
   newMessage: Message;
 };
 
+
+export type SubscriptionNewMessageArgs = {
+  topic: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -148,7 +153,9 @@ export type UserFragment = { __typename?: 'User', id: string, username: string }
 
 export type MessageFragment = { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string };
 
-export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type NewMessageSubscriptionVariables = Exact<{
+  topic: Scalars['String'];
+}>;
 
 
 export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'Message', id: string, body: string, createdAt?: any | null | undefined, roomId: string, sender: { __typename?: 'User', id: string, username: string } } };
@@ -225,8 +232,8 @@ export const MessageFragmentDoc = gql`
 }
     `;
 export const NewMessageDocument = gql`
-    subscription NewMessage {
-  newMessage {
+    subscription NewMessage($topic: String!) {
+  newMessage(topic: $topic) {
     ...Message
     sender {
       ...User
@@ -248,10 +255,11 @@ ${UserFragmentDoc}`;
  * @example
  * const { data, loading, error } = useNewMessageSubscription({
  *   variables: {
+ *      topic: // value for 'topic'
  *   },
  * });
  */
-export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+export function useNewMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, options);
       }

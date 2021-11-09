@@ -40,17 +40,16 @@ interface Inputs {
 	body: string;
 }
 export default function ChatCard({ roomId }: { roomId: string }) {
-	const [allMessages, { subscribeToMore, ...allMessageResult }] = useLazyQuery(
-		GetAllMessagesDocument
-	);
-	const [roomMessages, roomResult] = useLazyQuery(
-		GetAllMessagesForRoomDocument,
-		{
+	const [
+		allMessages,
+		{ subscribeToMore: subscribeToAll, ...allMessageResult },
+	] = useLazyQuery(GetAllMessagesDocument);
+	const [roomMessages, { subscribeToMore: subscribeToRoom, ...roomResult }] =
+		useLazyQuery(GetAllMessagesForRoomDocument, {
 			variables: {
 				roomId: roomId,
 			},
-		}
-	);
+		});
 	const [messages, setMessages] = useState<any>();
 
 	const [createMessage, {}] = useMutation(CreateMessageDocument);
@@ -78,6 +77,20 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 			if (allMessageResult.data) {
 				setMessages(allMessageResult.data.getAllMessages);
 			}
+			if (subscribeToAll) {
+				subscribeToAll({
+					document: NewMessageDocument,
+					updateQuery: (prev, { subscriptionData }) => {
+						if (!subscriptionData.data) return prev;
+						const newMessage = subscriptionData.data.newMessage;
+						return Object.assign({}, prev, {
+							getAllMessagesForRoom: {
+								messages: [newMessage, ...prev.getAllMessagesForRoom.messages],
+							},
+						});
+					},
+				});
+			}
 		} else {
 			roomMessages({
 				variables: {
@@ -87,21 +100,26 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 			if (roomResult.data) {
 				setMessages(roomResult.data.getAllMessagesForRoom);
 			}
+
+			if (subscribeToRoom) {
+				console.log("hi");
+				const out = subscribeToRoom({
+					document: NewMessageDocument,
+					updateQuery: (prev, { subscriptionData }) => {
+						if (!subscriptionData.data) return prev;
+						const newMessage = subscriptionData.data.newMessage;
+						return Object.assign({}, prev, {
+							getAllMessages: {
+								messages: [newMessage, ...prev.getAllMessages.messages],
+							},
+						});
+					},
+				});
+				console.log(out)
+			}
 		}
-		// subscribeToMore({
-		// 	document: NewMessageDocument,
-		// 	updateQuery: (prev, { subscriptionData }) => {
-		// 		if (!subscriptionData.data) return prev;
-		// 		const newMessage = subscriptionData.data.newMessage;
-		// 		return Object.assign({}, prev, {
-		// 			getAllMessages: {
-		// 				messages: [newMessage, ...prev.getAllMessages.messages],
-		// 			},
-		// 		});
-		// 	},
-		// });
 	}, [roomResult.data, allMessageResult.data, roomId]);
-	console.log(allMessageResult);
+
 	return (
 		<>
 			<ChatWrapper id="chat-wrapper">
