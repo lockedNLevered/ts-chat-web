@@ -7,7 +7,7 @@ export default function login() {
 	return (
 		<MainWrapper>
 			<NavBar />
-			<p>Login Page</p>
+			<h1>Login Page</h1>
 			<LoginForm />
 		</MainWrapper>
 	);

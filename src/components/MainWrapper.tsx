@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.main`
+const Wrapper = styled("main")`
 	padding: 0px;
 	display: flex;
 	flex-direction: column;
