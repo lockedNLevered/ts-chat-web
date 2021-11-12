@@ -8,8 +8,9 @@ import { AppState } from "../helpers/store";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { addUser, IUser, removeUser } from "../helpers/userSlice";
 import { useMutation } from "@apollo/client";
+import Logo from "./Logo";
 
-const NavContainer = styled.nav`
+const NavContainer = styled("header")`
 	color: white;
 	background-color: ${({ theme }) => theme.colors.darkPrimary};
 	padding: 1em;
@@ -50,14 +51,14 @@ function NavBar() {
 	if (!loading && data.getMe.user) {
 		navOptions = (
 			<NavAuthButtonContainer>
-				<p>{user.username}</p>{" "}
+				<h2>{user.username}</h2>{" "}
 				<PrimaryButton onClick={() => handleLogout()}>Logout</PrimaryButton>
 			</NavAuthButtonContainer>
 		);
 	}
 	return (
 		<NavContainer>
-			<p>Ts-Chat</p>
+			<Logo />
 			{navOptions}
 		</NavContainer>
 	);

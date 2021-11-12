@@ -4,10 +4,10 @@ import styled from "styled-components";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = styled("button")`
-	padding: 0.5em 1em;
+	padding: 0.5rm 1rm;
 	color: white;
-	border-radius: 5px;
-	border: 1px solid black;
+	border-radius: 0.3125rem;
+	border: 0.0625rem solid black;
 	background-color: ${({ theme }) => theme.colors.secondary};
 	margin: 0em 0.25em;
 	cursor: pointer;
@@ -18,10 +18,10 @@ const Button = styled("button")`
 `;
 
 const RButton = styled("button")`
-	padding: 1em 1.5em;
+	padding: 1rm 1.5rm;
 	color: white;
 	border-radius: 1.5rem;
-	border: 1px solid black;
+	border: 0.0625rem solid black;
 	background-color: ${({ theme }) => theme.colors.secondary};
 	margin: 0em 0.25em;
 	cursor: pointer;

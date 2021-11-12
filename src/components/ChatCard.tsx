@@ -74,7 +74,6 @@ export default function ChatCard() {
 			variables: {
 				topic: room.id,
 			},
-
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev;
 				const newMessage = subscriptionData.data.newMessage;
