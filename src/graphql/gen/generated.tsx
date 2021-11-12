@@ -89,6 +89,7 @@ export type QueryGetAllMessagesArgs = {
 
 
 export type QueryGetAllMessagesForRoomArgs = {
+  offsetPagination: OffsetPagination;
   roomId: Scalars['String'];
 };
 
@@ -178,6 +179,8 @@ export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages: { __ty
 
 export type GetAllMessagesForRoomQueryVariables = Exact<{
   roomId: Scalars['String'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
 }>;
 
 
@@ -348,8 +351,11 @@ export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQ
 export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
 export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllMessagesForRoomDocument = gql`
-    query GetAllMessagesForRoom($roomId: String!) {
-  getAllMessagesForRoom(roomId: $roomId) {
+    query GetAllMessagesForRoom($roomId: String!, $limit: Int!, $offset: Int!) {
+  getAllMessagesForRoom(
+    roomId: $roomId
+    offsetPagination: {limit: $limit, offset: $offset}
+  ) {
     messages {
       ...Message
       sender {
@@ -374,6 +380,8 @@ ${UserFragmentDoc}`;
  * const { data, loading, error } = useGetAllMessagesForRoomQuery({
  *   variables: {
  *      roomId: // value for 'roomId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

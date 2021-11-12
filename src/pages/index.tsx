@@ -1,15 +1,9 @@
 import MainWrapper from "../components/MainWrapper";
 import NavBar from "../components/NavBar";
 import ChatCard from "../components/ChatCard";
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../helpers/hooks";
-import { AppState } from "../helpers/store";
-import { enterRoom } from "../helpers/manageRoomSlice";
-import SideBar from "../components/SideBar";
+import TopicController from "../components/TopicController";
 function HomePage() {
-	const room = useAppSelector((state: AppState) => ({
-		id: state.room.id,
-	}));
+	
 
 	
 	
@@ -17,10 +11,8 @@ function HomePage() {
 		<>
 			<NavBar />
 			<MainWrapper>
-				<SideBar />
-				
-
-				<ChatCard roomId={room.id as string} />
+				<TopicController />
+				<ChatCard />
 			</MainWrapper>
 		</>
 	);

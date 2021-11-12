@@ -12,13 +12,14 @@ const InputField = styled.input`
 	background-color: ${({ theme }) => theme.colors.darkSecondary};
 	color: ${({ theme }) => theme.colors.fontWhite};
 	outline: none;
+	transition: 0.5s;
 	:focus {
-		border-color: ${({ theme }) => theme.colors.effectBlue};
+		border-color: ${({ theme }) => theme.colors.darkPrimary};
 		border-width: 2px;
 	}
 
 	:hover {
-		background-color: ${({ theme }) => theme.colors.lightGray};
+		background-color: ${({ theme }) => theme.colors.darkPrimary};
 	}
 `;
 

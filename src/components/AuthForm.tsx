@@ -83,10 +83,11 @@ export function RegisterForm() {
 		{
 			refetchQueries: [GetMeDocument, "GetMe"],
 			onCompleted: (data) => {
+				console.log(data)
 				dispatch(
 					addUser({
-						id: data.loginUser.user.id,
-						username: data.loginUser.user.username,
+						id: data.registerUser.user.id,
+						username: data.registerUser.user.username,
 					})
 				);
 				router.push("/");

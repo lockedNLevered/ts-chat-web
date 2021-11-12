@@ -6,7 +6,7 @@ import { GetMeDocument, LogoutUserDocument } from "../graphql/gen/generated";
 import { useQuery } from "@apollo/client";
 import { AppState } from "../helpers/store";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
-import { addUser, IUser } from "../helpers/userSlice";
+import { addUser, IUser, removeUser } from "../helpers/userSlice";
 import { useMutation } from "@apollo/client";
 
 const NavContainer = styled.nav`
@@ -30,6 +30,10 @@ function NavBar() {
 		username: state.user.username,
 	}));
 
+	async function handleLogout() {
+		logoutUser().then(() => dispatch(removeUser()));
+	}
+
 	if (!loading && data.getMe.user)
 		dispatch(
 			addUser({ id: data.getMe.user.id, username: data.getMe.user.username })
@@ -47,7 +51,7 @@ function NavBar() {
 		navOptions = (
 			<NavAuthButtonContainer>
 				<p>{user.username}</p>{" "}
-				<PrimaryButton onClick={() => logoutUser()}>Logout</PrimaryButton>
+				<PrimaryButton onClick={() => handleLogout()}>Logout</PrimaryButton>
 			</NavAuthButtonContainer>
 		);
 	}

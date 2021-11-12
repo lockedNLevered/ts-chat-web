@@ -11,13 +11,14 @@ import React, { useEffect } from "react";
 import PrimaryButton from "./Button";
 import InputField from "./InputField";
 import ChatMessage from "./ChatMessage";
+import { useAppSelector } from "../helpers/hooks";
+import { AppState } from "../helpers/store";
 
 const ChatWrapper = styled("section")`
-	height: 70vh;
+	height: 60vh;
 	width: 100vw;
 	overflow-y: scroll;
 	display: flex;
-
 	flex-direction: column-reverse;
 `;
 
@@ -34,12 +35,20 @@ const ChatForm = styled("form")`
 interface Inputs {
 	body: string;
 }
-export default function ChatCard({ roomId }: { roomId: string }) {
+export default function ChatCard() {
+	const room = useAppSelector((state: AppState) => ({
+		id: state.room.id,
+	}));
 	const { subscribeToMore, ...result } = useQuery(
 		GetAllMessagesForRoomDocument,
 		{
+			skip: !room.id,
 			variables: {
-				roomId: roomId,
+				roomId: room.id,
+				offsetPagination: {
+					offset: 0,
+					limit: 20,
+				},
 			},
 		}
 	);
@@ -54,16 +63,18 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 		createMessage({
 			variables: {
 				body: eventData.body,
-				roomId: roomId,
+				roomId: room.id,
 			},
 		});
 	};
+
 	useEffect(() => {
 		subscribeToMore({
 			document: NewMessageDocument,
 			variables: {
-				topic: roomId,
+				topic: room.id,
 			},
+
 			updateQuery: (prev, { subscriptionData }) => {
 				if (!subscriptionData.data) return prev;
 				const newMessage = subscriptionData.data.newMessage;
@@ -74,7 +85,7 @@ export default function ChatCard({ roomId }: { roomId: string }) {
 				});
 			},
 		});
-	}, [roomId]);
+	}, [room]);
 
 	return (
 		<>

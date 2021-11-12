@@ -40,8 +40,11 @@ query GetAllMessages($limit: Int!, $offset: Int!) {
 	}
 }
 
-query GetAllMessagesForRoom($roomId: String!) {
-	getAllMessagesForRoom(roomId: $roomId) {
+query GetAllMessagesForRoom($roomId: String!, $limit: Int!, $offset: Int!) {
+	getAllMessagesForRoom(
+		roomId: $roomId
+		offsetPagination: { limit: $limit, offset: $offset }
+	) {
 		messages {
 			...Message
 			sender {

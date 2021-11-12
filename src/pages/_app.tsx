@@ -14,7 +14,7 @@ const theme = {
 		darkSecondary: "#3A5683",
 		lightGray: "#76B041",
 		effectBlue: "#51CB20",
-		white: "#FDFDFD",
+		white: "#fff",
 	},
 };
 const GlobalStyle = createGlobalStyle`

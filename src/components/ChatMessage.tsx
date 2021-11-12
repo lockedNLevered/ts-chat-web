@@ -14,7 +14,7 @@ interface Props
 }
 
 const MessageOutline = styled("div")`
-	background-color: ${({ theme }) => theme.colors.white}
+	background-color: ${({ theme }) => theme.colors.white};
 	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
@@ -31,12 +31,12 @@ export default function ChatMessage({ message }: Props) {
 			<MessageOutline>
 				<p>{message.body}</p>
 				<MessageSender
-					color={user.id == parseInt(message.sender.id) ? "#249E4A" : "white"}
+					color={user.id == parseInt(message.sender.id) ? "red" : "black"}
 				>
 					- {message.sender.username}
 				</MessageSender>
 				<p>sent at: {message.createdAt}</p>
-				<p>room: {message.roomId}</p>
+				<p>In Room: {message.roomId}</p>
 			</MessageOutline>
 		</>
 	);
