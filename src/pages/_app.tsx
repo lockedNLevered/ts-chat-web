@@ -7,13 +7,14 @@ import store from "../helpers/store";
 
 const theme = {
 	colors: {
-		primary: "#4832a8",
-		secondary: "#6E0EDA",
+		primary: "#51CB20",
+		secondary: "#639A88",
 		fontWhite: "#EEE8E8",
-		darkPrimary: "#5E5E5E",
-		darkSecondary: "#3e3e3e",
-		lightGray: "#4C4C4C",
-		effectBlue: "#3925F4",
+		darkPrimary: "#2708A0",
+		darkSecondary: "#3A5683",
+		lightGray: "#76B041",
+		effectBlue: "#51CB20",
+		white: "#FDFDFD",
 	},
 };
 const GlobalStyle = createGlobalStyle`
@@ -21,14 +22,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-	background-color: #5E5E5E;
+	
 	overflow: hidden;
 	
 	
   }
-  	p {
-	  color: white;
-  		}
+  	
 	}
 
 	}

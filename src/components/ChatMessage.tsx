@@ -14,7 +14,7 @@ interface Props
 }
 
 const MessageOutline = styled("div")`
-	background-color: #3e3e3e;
+	background-color: ${({ theme }) => theme.colors.white}
 	border: 1px solid black;
 	display: flex;
 	flex-direction: column;

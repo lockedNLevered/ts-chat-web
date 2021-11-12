@@ -11,7 +11,7 @@ import { useMutation } from "@apollo/client";
 
 const NavContainer = styled.nav`
 	color: white;
-	background-color: ${({ theme }) => theme.colors.darkSecondary};
+	background-color: ${({ theme }) => theme.colors.darkPrimary};
 	padding: 1em;
 	display: flex;
 	justify-content: space-around;
