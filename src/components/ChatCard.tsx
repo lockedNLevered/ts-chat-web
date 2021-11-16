@@ -14,24 +14,35 @@ import ChatMessage from "./ChatMessage";
 import { useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
 
-const ChatWrapper = styled("section")`
-	height: 60vh;
-	width: 100vw;
+const MessageOutputWrapper = styled("section")`
+	position: relative;
+	flex-grow: 1;
+`;
+
+const ChatWrapper = styled("div")`
+	max-height: 60vh;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column-reverse;
+	scroll-snap-align: end;
+	scroll-snap-type: y;
 `;
 
 const ChatForm = styled("form")`
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	margin: 1em;
+
 	justify-content: center;
-	position: fixed;
-	bottom: 0.25rem;
 `;
 
+
+const FormWrapper = styled("div")`
+
+	background-color: ${({theme}) => theme.colors.light};
+	padding: 4rem 0;
+
+`
 interface Inputs {
 	body: string;
 }
@@ -42,14 +53,11 @@ export default function ChatCard() {
 	const { subscribeToMore, ...result } = useQuery(
 		GetAllMessagesForRoomDocument,
 		{
-			skip: !room.id,
+			// skip: !room.id,
 			variables: {
 				roomId: room.id,
-				offsetPagination: {
-					offset: 0,
-					limit: 20,
-				},
 			},
+			fetchPolicy: "network-only",
 		}
 	);
 
@@ -87,7 +95,7 @@ export default function ChatCard() {
 	}, [room]);
 
 	return (
-		<>
+		<MessageOutputWrapper>
 			<ChatWrapper id="chat-wrapper">
 				{result.data ? (
 					result.data.getAllMessagesForRoom.messages.map(
@@ -99,10 +107,12 @@ export default function ChatCard() {
 					<p>You are not in a room</p>
 				)}
 			</ChatWrapper>
-			<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
-				<InputField {...register("body")} />
-				<PrimaryButton type="submit">Submit</PrimaryButton>
-			</ChatForm>
-		</>
+			<FormWrapper>
+				<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
+					<InputField {...register("body")} />
+					<PrimaryButton type="submit">Submit</PrimaryButton>
+				</ChatForm>
+			</FormWrapper>
+		</MessageOutputWrapper>
 	);
 }

@@ -18,19 +18,17 @@ const theme = {
 	},
 };
 const GlobalStyle = createGlobalStyle`
-  body {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 	
-	overflow: hidden;
-	
-	
-  }
-  	
-	}
 
 	}
+	body {
+		overflow: hidden;
+	}
+	
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {

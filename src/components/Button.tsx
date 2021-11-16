@@ -4,12 +4,12 @@ import styled from "styled-components";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = styled("button")`
-	padding: 0.5rm 1rm;
+	padding: 0.5rem;
 	color: white;
 	border-radius: 0.3125rem;
 	border: 0.0625rem solid black;
 	background-color: ${({ theme }) => theme.colors.secondary};
-	margin: 0em 0.25em;
+	margin: 0em 1rem;
 	cursor: pointer;
 	transition: 1s;
 	:hover {
@@ -17,13 +17,11 @@ const Button = styled("button")`
 	}
 `;
 
-const RButton = styled("button")`
-	padding: 1rm 1.5rm;
+const CButton = styled("button")`
+	padding: 0.5rem 1.5rem;
 	color: white;
-	border-radius: 1.5rem;
 	border: 0.0625rem solid black;
 	background-color: ${({ theme }) => theme.colors.secondary};
-	margin: 0em 0.25em;
 	cursor: pointer;
 	transition: 0.5s;
 	:hover {
@@ -39,8 +37,8 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 export default PrimaryButton;
 
-export const RoomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const ControllerButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(props, ref) => {
-		return <RButton ref={ref} {...props} />;
+		return <CButton ref={ref} {...props} />;
 	}
 );

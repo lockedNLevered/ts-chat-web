@@ -9,29 +9,32 @@ import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { addUser, IUser, removeUser } from "../helpers/userSlice";
 import { useMutation } from "@apollo/client";
 import Logo from "./Logo";
+import { useRef } from "react";
+import React from "react";
 
 const NavContainer = styled("header")`
 	color: white;
 	background-color: ${({ theme }) => theme.colors.darkPrimary};
-	padding: 1em;
+	padding: 1rem;
 	display: flex;
 	justify-content: space-around;
+	align-items: center;
 	border-bottom: 1px solid black;
 	width: 100%;
 	top: 0px;
 `;
-function NavBar() {
+const NavBar = React.forwardRef((props, ref) => {
 	const router = useRouter();
 	const { loading, data } = useQuery(GetMeDocument);
 	const [logoutUser] = useMutation(LogoutUserDocument);
 	const dispatch = useAppDispatch();
-
+	const navRef = useRef();
 	const user: IUser = useAppSelector((state: AppState) => ({
 		id: state.user.id,
 		username: state.user.username,
 	}));
 
-	async function handleLogout() {
+	function handleLogout(): Promise<void> {
 		logoutUser().then(() => dispatch(removeUser()));
 	}
 
@@ -62,5 +65,5 @@ function NavBar() {
 			{navOptions}
 		</NavContainer>
 	);
-}
+});
 export default NavBar;

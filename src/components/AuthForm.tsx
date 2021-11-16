@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { addUser } from "../helpers/userSlice";
 import { useAppDispatch } from "../helpers/hooks";
 
-const Form = styled.form`
+const Form = styled("form")`
 	display: flex;
 	flex-direction: column;
 	margin: auto;
@@ -78,22 +78,19 @@ export function RegisterForm() {
 		formState: { errors },
 	} = useForm<RegisterInputs>();
 	const dispatch = useAppDispatch();
-	const [registerUser] = useMutation(
-		RegisterUserDocument,
-		{
-			refetchQueries: [GetMeDocument, "GetMe"],
-			onCompleted: (data) => {
-				console.log(data)
-				dispatch(
-					addUser({
-						id: data.registerUser.user.id,
-						username: data.registerUser.user.username,
-					})
-				);
-				router.push("/");
-			},
-		}
-	);
+	const [registerUser] = useMutation(RegisterUserDocument, {
+		refetchQueries: [GetMeDocument, "GetMe"],
+		onCompleted: (data) => {
+			console.log(data);
+			dispatch(
+				addUser({
+					id: data.registerUser.user.id,
+					username: data.registerUser.user.username,
+				})
+			);
+			router.push("/");
+		},
+	});
 	const router = useRouter();
 	const onSubmit: SubmitHandler<RegisterInputs> = (formData) => {
 		registerUser({
