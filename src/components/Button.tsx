@@ -4,16 +4,18 @@ import styled from "styled-components";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 const Button = styled("button")`
-	padding: 0.5rem;
+	padding: 1rem;
 	color: ${({ theme }) => theme.colors.black};
-	border-radius: 0.3125rem;
-
+	border-radius: 0.0625rem;
+	border: none;
 	background-color: ${({ theme }) => theme.colors.secondary};
 	margin: 0em 1rem;
 	cursor: pointer;
-	transition: 1s;
+	transition: 0.4s;
 	:hover {
 		background-color: ${({ theme }) => theme.colors.primary};
+		opacity: 0.7;
+		color: ${({ theme }) => theme.colors.white};
 	}
 `;
 
@@ -34,7 +36,7 @@ const LButton = styled("a")`
 const CButton = styled("button")`
 	padding: 0.5rem 1.5rem;
 	color: ${({ theme }) => theme.colors.black};
-	background-color: ${({ theme }) => theme.colors.secondary};
+	background-color: ${({ theme }) => theme.colors.white};
 	cursor: pointer;
 	transition: 0.5s;
 	width: 100%;

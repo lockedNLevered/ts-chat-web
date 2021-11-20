@@ -8,22 +8,38 @@ import {
 } from "../graphql/gen/generated";
 import { useForm, SubmitHandler } from "react-hook-form";
 import React, { useEffect } from "react";
-import PrimaryButton from "./Button";
-import InputField from "./InputField";
+
 import ChatMessage from "./ChatMessage";
 import { useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
+import ChatForm from "./ChatForm";
 
-const Wrapper = styled("div")`
+const Wrapper = styled("section")`
 	flex-grow: 1;
 	height: 80vh;
 	position: relative;
 `;
 
-const FeedWrapper = styled("section")`
+const FeedWrapper = styled("div")`
 	height: 70vh;
 	overflow-y: scroll;
 	scroll-snap-type: y;
+	::-webkit-scrollbar {
+		width: 0.9375rem;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: ${({ theme }) => theme.colors.white};
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.colors.primary};
+		border-radius: 0.5rem;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		opacity: 0.7;
+	}
 `;
 
 const ChatWrapper = styled("div")`
@@ -32,26 +48,6 @@ const ChatWrapper = styled("div")`
 	scroll-snap-align: end;
 `;
 
-const ChatForm = styled("form")`
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	justify-content: center;
-	padding: 1rem;
-	position: absolute;
-	background-color: white;
-	bottom: 0;
-	left: 0;
-	right: 0;
-`;
-
-const FormWrapper = styled("div")`
-	background-color: ${({ theme }) => theme.colors.light};
-	padding: 2rem;
-`;
-interface Inputs {
-	body: string;
-}
 export default function ChatCard() {
 	const room = useAppSelector((state: AppState) => ({
 		id: state.room.id,
@@ -66,21 +62,6 @@ export default function ChatCard() {
 			fetchPolicy: "network-only",
 		}
 	);
-
-	const [createMessage, {}] = useMutation(CreateMessageDocument);
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (eventData) => {
-		createMessage({
-			variables: {
-				body: eventData.body,
-				roomId: room.id,
-			},
-		});
-	};
 
 	useEffect(() => {
 		subscribeToMore({
@@ -100,27 +81,25 @@ export default function ChatCard() {
 		});
 	}, [room]);
 
+	function renderMessages() {
+		if (result.data) {
+			return result.data.getAllMessagesForRoom.messages.map(
+				(message: Message, key: number) => (
+					<ChatMessage message={message} key={key} />
+				)
+			);
+		} else {
+			return <p>You are not in a room</p>;
+		}
+	}
+
 	return (
 		<Wrapper>
 			<FeedWrapper>
-				<ChatWrapper id="chat-wrapper">
-					{result.data ? (
-						result.data.getAllMessagesForRoom.messages.map(
-							(message: Message, key: number) => (
-								<ChatMessage message={message} key={key} />
-							)
-						)
-					) : (
-						<p>You are not in a room</p>
-					)}
-				</ChatWrapper>
+				<ChatWrapper>{renderMessages()}</ChatWrapper>
 			</FeedWrapper>
-			<FormWrapper>
-				<ChatForm id="chat-form" onSubmit={handleSubmit(onSubmit)}>
-					<InputField {...register("body")} />
-					<PrimaryButton type="submit">Submit</PrimaryButton>
-				</ChatForm>
-			</FormWrapper>
+
+			<ChatForm />
 		</Wrapper>
 	);
 }

@@ -6,7 +6,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 const InputField = styled.input`
 	border-radius: 5px;
 	min-height: 4em;
-	width 100%;
+	flex-grow: 1;
 	margin: 1rem 0;
 	padding: 0.5em 1em;
 	border: 2px solid ${({ theme }) => theme.colors.black};
