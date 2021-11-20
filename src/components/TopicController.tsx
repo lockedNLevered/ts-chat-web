@@ -6,12 +6,12 @@ import { AppState } from "../helpers/store";
 import { ControllerButton } from "./Button";
 const Wrapper = styled("aside")`
 	width: 20vw;
-	height: 70vh;
+	height: 80vh;
 	background-color: ${({ theme }) => theme.colors.darkSecondary};
-	padding: 2rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	
 `;
 
 const Header = styled("h1")`
@@ -23,7 +23,8 @@ const ActionWrapper = styled("div")`
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	overflow-x: auto;
+	overflow-y: auto;
+	
 `;
 const SideBar = () => {
 	const dispatch = useAppDispatch();

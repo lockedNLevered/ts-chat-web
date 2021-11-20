@@ -5,7 +5,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputField = styled.input`
 	border-radius: 5px;
-	min-height: 2em;
+	min-height: 4em;
 	min-width: 80%;
 	padding: 0.5em 1em;
 	border: 2px solid transparent;
@@ -17,6 +17,9 @@ const InputField = styled.input`
 		border-color: ${({ theme }) => theme.colors.darkPrimary};
 		border-width: 2px;
 	}
+	::placeholder {
+		color: white;
+	}
 
 	:hover {
 		background-color: ${({ theme }) => theme.colors.darkPrimary};
@@ -24,6 +27,6 @@ const InputField = styled.input`
 `;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-	return <InputField ref={ref} placeholder="Lets chat" {...props} />;
+	return <InputField ref={ref} placeholder="Lets chat..." {...props} />;
 });
 export default Input;

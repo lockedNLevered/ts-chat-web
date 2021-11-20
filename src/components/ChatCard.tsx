@@ -16,7 +16,7 @@ import { AppState } from "../helpers/store";
 
 const Wrapper = styled("div")`
 	flex-grow: 1;
-	height: 70vh;
+	height: 80vh;
 	position: relative;
 `;
 
