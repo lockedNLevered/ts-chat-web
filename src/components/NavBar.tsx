@@ -11,10 +11,11 @@ import { useMutation } from "@apollo/client";
 import Logo from "./Logo";
 import { useRef } from "react";
 import React from "react";
+import { LinkButton } from "./Button";
 
 const NavContainer = styled("header")`
 	color: white;
-	background-color: ${({ theme }) => theme.colors.darkPrimary};
+	background-color: ${({ theme }) => theme.colors.primary};
 	padding: 1rem;
 	display: flex;
 	justify-content: space-around;
@@ -28,41 +29,43 @@ const NavBar = React.forwardRef((props, ref) => {
 	const { loading, data } = useQuery(GetMeDocument);
 	const [logoutUser] = useMutation(LogoutUserDocument);
 	const dispatch = useAppDispatch();
-	const navRef = useRef();
+
 	const user: IUser = useAppSelector((state: AppState) => ({
 		id: state.user.id,
 		username: state.user.username,
 	}));
 
-	function handleLogout(): Promise<void> {
+	function handleLogout(): void {
 		logoutUser().then(() => dispatch(removeUser()));
 	}
 
-	if (!loading && data.getMe.user)
+	if (!loading && data)
 		dispatch(
 			addUser({ id: data.getMe.user.id, username: data.getMe.user.username })
 		);
-
-	let navOptions = (
-		<NavAuthButtonContainer>
-			<PrimaryButton onClick={() => router.push("/login")}>Login</PrimaryButton>
-			<PrimaryButton onClick={() => router.push("/register")}>
-				Register
-			</PrimaryButton>
-		</NavAuthButtonContainer>
-	);
-	if (!loading && data.getMe.user) {
-		navOptions = (
-			<NavAuthButtonContainer>
-				<h2>{user.username}</h2>{" "}
-				<PrimaryButton onClick={() => handleLogout()}>Logout</PrimaryButton>
-			</NavAuthButtonContainer>
-		);
+			console.log(user)
+	function renderNavOptions() {
+		if (!loading && user.id) {
+			return (
+				<NavAuthButtonContainer>
+					<h2>{user.username}</h2>{" "}
+					<PrimaryButton onClick={() => handleLogout()}>Logout</PrimaryButton>
+				</NavAuthButtonContainer>
+			);
+		} else {
+			return (
+				<NavAuthButtonContainer>
+					<LinkButton href="/login">Login</LinkButton>
+					<LinkButton href="/register">Register</LinkButton>
+				</NavAuthButtonContainer>
+			);
+		}
 	}
+
 	return (
 		<NavContainer>
 			<Logo />
-			{navOptions}
+			{renderNavOptions()}
 		</NavContainer>
 	);
 });

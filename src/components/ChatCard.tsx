@@ -23,14 +23,13 @@ const Wrapper = styled("div")`
 const FeedWrapper = styled("section")`
 	height: 70vh;
 	overflow-y: scroll;
+	scroll-snap-type: y;
 `;
 
 const ChatWrapper = styled("div")`
-	overflow-y: scroll;
 	display: flex;
 	flex-direction: column-reverse;
 	scroll-snap-align: end;
-	scroll-snap-type: y;
 `;
 
 const ChatForm = styled("form")`

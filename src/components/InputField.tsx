@@ -6,11 +6,12 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 const InputField = styled.input`
 	border-radius: 5px;
 	min-height: 4em;
-	min-width: 80%;
+	width 100%;
+	margin: 1rem 0;
 	padding: 0.5em 1em;
-	border: 2px solid transparent;
-	background-color: ${({ theme }) => theme.colors.darkSecondary};
-	color: ${({ theme }) => theme.colors.fontWhite};
+	border: 2px solid ${({ theme }) => theme.colors.black};
+	background-color: ${({ theme }) => theme.colors.detail};
+	color: ${({ theme }) => theme.colors.black};
 	outline: none;
 	transition: 0.5s;
 	:focus {
@@ -18,11 +19,11 @@ const InputField = styled.input`
 		border-width: 2px;
 	}
 	::placeholder {
-		color: white;
+		color: ${({ theme }) => theme.colors.black};
 	}
 
 	:hover {
-		background-color: ${({ theme }) => theme.colors.darkPrimary};
+		opacity: 0.7;
 	}
 `;
 

@@ -7,16 +7,14 @@ import { ControllerButton } from "./Button";
 const Wrapper = styled("aside")`
 	width: 20vw;
 	height: 80vh;
-	background-color: ${({ theme }) => theme.colors.darkSecondary};
+	background-color: ${({ theme }) => theme.colors.primary};
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	
 `;
 
 const Header = styled("h1")`
 	align-self: center;
-	color: ${({ theme }) => theme.colors.fontWhite};
 `;
 
 const ActionWrapper = styled("div")`
@@ -24,7 +22,6 @@ const ActionWrapper = styled("div")`
 	align-items: center;
 	flex-direction: column;
 	overflow-y: auto;
-	
 `;
 const SideBar = () => {
 	const dispatch = useAppDispatch();
@@ -56,7 +53,7 @@ const SideBar = () => {
 				{currentRoom === "0" ? (
 					rooms.map((roomId) => (
 						<ControllerButton onClick={() => handleRoom(String(roomId))}>
-							Enter Room {roomId}
+							Room {roomId}
 						</ControllerButton>
 					))
 				) : (

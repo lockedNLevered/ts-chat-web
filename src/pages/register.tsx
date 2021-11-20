@@ -5,10 +5,11 @@ import { RegisterForm } from "../components/AuthForm";
 
 export default function register() {
 	return (
-		<MainWrapper>
+		<>
 			<NavBar />
-			<p>Register Page</p>
-			<RegisterForm />
-		</MainWrapper>
+			<MainWrapper>
+				<RegisterForm />
+			</MainWrapper>
+		</>
 	);
 }

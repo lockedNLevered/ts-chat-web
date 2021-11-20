@@ -12,11 +12,11 @@ import {
 import { useRouter } from "next/router";
 import { addUser } from "../helpers/userSlice";
 import { useAppDispatch } from "../helpers/hooks";
+import AuthCard from "./AuthCard";
 
 const Form = styled("form")`
 	display: flex;
 	flex-direction: column;
-	margin: auto;
 `;
 
 interface Inputs {
@@ -56,18 +56,22 @@ export function LoginForm() {
 		});
 	};
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
-			<InputField
-				placeholder="Username"
-				{...register("username", { required: true })}
-			/>
-			<InputField
-				placeholder="Password"
-				{...register("password", { required: true })}
-			/>
-			{errors.password && <span>This field is required</span>}
-			<PrimaryButton type="submit">Submit</PrimaryButton>
-		</Form>
+		<AuthCard>
+			<h1>Login Form</h1>
+			<Form onSubmit={handleSubmit(onSubmit)}>
+				<InputField
+					placeholder="Username"
+					{...register("username", { required: true })}
+				/>
+				<InputField
+					type="password"
+					placeholder="Password"
+					{...register("password", { required: true })}
+				/>
+				{errors.password && <span>This field is required</span>}
+				<PrimaryButton type="submit">Submit</PrimaryButton>
+			</Form>
+		</AuthCard>
 	);
 }
 
@@ -102,21 +106,26 @@ export function RegisterForm() {
 		});
 	};
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
-			<InputField
-				placeholder="Username"
-				{...register("username", { required: true })}
-			/>
-			<InputField
-				placeholder="Password"
-				{...register("password", { required: true })}
-			/>
-			<InputField
-				placeholder="Confirm Password"
-				{...register("confirmPassword", { required: true })}
-			/>
-			{errors.password && <span>This field is required</span>}
-			<PrimaryButton type="submit">Submit</PrimaryButton>
-		</Form>
+		<AuthCard>
+			<h1>Register Form</h1>
+			<Form onSubmit={handleSubmit(onSubmit)}>
+				<InputField
+					placeholder="Username"
+					{...register("username", { required: true })}
+				/>
+				<InputField
+					type="password"
+					placeholder="Password"
+					{...register("password", { required: true })}
+				/>
+				<InputField
+					type="password"
+					placeholder="Confirm Password"
+					{...register("confirmPassword", { required: true })}
+				/>
+				{errors.password && <span>This field is required</span>}
+				<PrimaryButton type="submit">Submit</PrimaryButton>
+			</Form>
+		</AuthCard>
 	);
 }
