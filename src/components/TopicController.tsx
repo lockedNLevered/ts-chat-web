@@ -6,7 +6,7 @@ import { AppState } from "../helpers/store";
 import { ControllerButton } from "./Button";
 const Wrapper = styled("aside")`
 	width: 20vw;
-	height: 100vh;
+	height: 70vh;
 	background-color: ${({ theme }) => theme.colors.darkSecondary};
 	padding: 2rem;
 	display: flex;
@@ -60,7 +60,6 @@ const SideBar = () => {
 					))
 				) : (
 					<>
-						
 						{rooms.map((roomId) => (
 							<ControllerButton onClick={() => handleRoom(String(roomId))}>
 								Room {roomId}

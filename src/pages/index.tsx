@@ -10,7 +10,6 @@ function HomePage() {
 			<NavBar/>
 			<MainWrapper>
 				<TopicController />
-
 				<ChatCard />
 			</MainWrapper>
 		</>
