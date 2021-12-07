@@ -6,7 +6,6 @@ import {
 	NewMessageDocument,
 } from "../graphql/gen/generated";
 import React, { useEffect } from "react";
-
 import ChatMessage from "./ChatMessage";
 import { useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
@@ -97,7 +96,6 @@ export default function ChatCard() {
 			<FeedWrapper>
 				<ChatWrapper>{renderMessages()}</ChatWrapper>
 			</FeedWrapper>
-
 			<ChatForm />
 		</Wrapper>
 	);

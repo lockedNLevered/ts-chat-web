@@ -1,11 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 import userReducer from "./userSlice";
-import roomReducer from "./manageRoomSlice";
+import roomReducer from "./roomSlice";
+import asideReducer from "./asideSlice";
 
 export function makeStore() {
 	return configureStore({
-		reducer: { user: userReducer, room: roomReducer },
+		reducer: { user: userReducer, room: roomReducer, aside: asideReducer },
 	});
 }
 const store = makeStore();

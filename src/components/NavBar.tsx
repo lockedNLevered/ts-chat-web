@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import PrimaryButton from "./Button";
 import NavAuthButtonContainer from "./NavAuthButtonContainer";
-import { useRouter } from "next/router";
 import { GetMeDocument, LogoutUserDocument } from "../graphql/gen/generated";
 import { useQuery } from "@apollo/client";
 import { AppState } from "../helpers/store";
@@ -9,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { addUser, IUser, removeUser } from "../helpers/userSlice";
 import { useMutation } from "@apollo/client";
 import Logo from "./Logo";
-import { useRef } from "react";
 import React from "react";
 import { LinkButton } from "./Button";
 

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
-import { enterRoom } from "../helpers/manageRoomSlice";
+import { enterRoom } from "../helpers/roomSlice";
+import { toggle } from "../helpers/asideSlice";
 import { AppState } from "../helpers/store";
 import { ControllerButton } from "./Button";
 const Wrapper = styled("aside")`
@@ -52,22 +53,19 @@ const Tab = styled("div")`
 	background-color: red;
 	position: fixed;
 	left: 0;
-	width: 5vw;
+	width: 50px;
 	height: 2.5rem;
-	bottom: 50vh;
+	top: 20vh;
 	z-index: 2;
-	@media (min-width: 48rem) {
-		display: none;
-	}
-
-	
-	
 `;
 
 const SideBar = () => {
 	const dispatch = useAppDispatch();
 	const room = useAppSelector((state: AppState) => ({
 		id: state.room.id,
+	}));
+	const topicController = useAppSelector((state: AppState) => ({
+		aside: state.aside.open,
 	}));
 
 	const [currentRoom, setCurrentRoom] = useState<string>("0");
@@ -78,6 +76,9 @@ const SideBar = () => {
 			})
 		);
 	};
+	const handleTopicController = () => {
+		dispatch(toggle());
+	};
 
 	useEffect(() => {
 		if (!room.id) {
@@ -86,10 +87,14 @@ const SideBar = () => {
 			setCurrentRoom(room.id);
 		}
 	}, [room.id]);
-	const rooms = [...Array(30).keys()];
+
+	const rooms = [...Array(10).keys()];
 	return (
 		<>
-			<Wrapper>
+			<Wrapper
+				id="topic-controller"
+				className={`${topicController.aside ? "aside--open" : "aside--close"}`}
+			>
 				<Header>Pick a room</Header>
 				<ActionWrapper>
 					{currentRoom === "0" ? (
@@ -109,7 +114,7 @@ const SideBar = () => {
 					)}
 				</ActionWrapper>
 			</Wrapper>
-			<Tab>Open</Tab>
+			<Tab onClick={handleTopicController}>Open</Tab>
 		</>
 	);
 };
