@@ -11,6 +11,13 @@ const Wrapper = styled("aside")`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	position: absolute;
+	left: -25rem;
+	z-index: 2;
+	@media (min-width: 48rem) {
+		position: relative;
+		left: 0;
+	}
 `;
 
 const Header = styled("h1")`
@@ -22,6 +29,7 @@ const ActionWrapper = styled("div")`
 	align-items: center;
 	flex-direction: column;
 	overflow-y: auto;
+
 	::-webkit-scrollbar {
 		width: 0.9375rem;
 	}
@@ -39,6 +47,23 @@ const ActionWrapper = styled("div")`
 		opacity: 0.7;
 	}
 `;
+
+const Tab = styled("div")`
+	background-color: red;
+	position: fixed;
+	left: 0;
+	width: 5vw;
+	height: 2.5rem;
+	bottom: 50vh;
+	z-index: 2;
+	@media (min-width: 48rem) {
+		display: none;
+	}
+
+	
+	
+`;
+
 const SideBar = () => {
 	const dispatch = useAppDispatch();
 	const room = useAppSelector((state: AppState) => ({
@@ -63,26 +88,29 @@ const SideBar = () => {
 	}, [room.id]);
 	const rooms = [...Array(30).keys()];
 	return (
-		<Wrapper>
-			<Header>Pick a room</Header>
-			<ActionWrapper>
-				{currentRoom === "0" ? (
-					rooms.map((roomId) => (
-						<ControllerButton onClick={() => handleRoom(String(roomId))}>
-							Room {roomId}
-						</ControllerButton>
-					))
-				) : (
-					<>
-						{rooms.map((roomId) => (
+		<>
+			<Wrapper>
+				<Header>Pick a room</Header>
+				<ActionWrapper>
+					{currentRoom === "0" ? (
+						rooms.map((roomId) => (
 							<ControllerButton onClick={() => handleRoom(String(roomId))}>
 								Room {roomId}
 							</ControllerButton>
-						))}
-					</>
-				)}
-			</ActionWrapper>
-		</Wrapper>
+						))
+					) : (
+						<>
+							{rooms.map((roomId) => (
+								<ControllerButton onClick={() => handleRoom(String(roomId))}>
+									Room {roomId}
+								</ControllerButton>
+							))}
+						</>
+					)}
+				</ActionWrapper>
+			</Wrapper>
+			<Tab>Open</Tab>
+		</>
 	);
 };
 export default SideBar;

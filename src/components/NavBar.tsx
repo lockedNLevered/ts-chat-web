@@ -25,7 +25,6 @@ const NavContainer = styled("header")`
 	top: 0px;
 `;
 const NavBar = React.forwardRef((props, ref) => {
-	const router = useRouter();
 	const { loading, data } = useQuery(GetMeDocument);
 	const [logoutUser] = useMutation(LogoutUserDocument);
 	const dispatch = useAppDispatch();
@@ -43,7 +42,6 @@ const NavBar = React.forwardRef((props, ref) => {
 		dispatch(
 			addUser({ id: data.getMe.user.id, username: data.getMe.user.username })
 		);
-			console.log(user)
 	function renderNavOptions() {
 		if (!loading && user.id) {
 			return (

@@ -1,12 +1,10 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import {
-	CreateMessageDocument,
 	GetAllMessagesForRoomDocument,
 	Message,
 	NewMessageDocument,
 } from "../graphql/gen/generated";
-import { useForm, SubmitHandler } from "react-hook-form";
 import React, { useEffect } from "react";
 
 import ChatMessage from "./ChatMessage";
@@ -18,6 +16,7 @@ const Wrapper = styled("section")`
 	flex-grow: 1;
 	height: 80vh;
 	position: relative;
+	width: 100%;
 `;
 
 const FeedWrapper = styled("div")`

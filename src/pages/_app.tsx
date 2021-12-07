@@ -1,6 +1,6 @@
 import "../assets/styles/global.css";
 import type { AppProps } from "next/app";
-import { createGlobalStyle, css, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ApolloProvider } from "@apollo/client";
 import client from "../client";
 import { Provider as ReduxProvider } from "react-redux";
