@@ -7,6 +7,7 @@ import { AppState } from "../helpers/store";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { addUser, IUser, removeUser } from "../helpers/userSlice";
 import { useMutation } from "@apollo/client";
+import { toggle } from "../helpers/asideSlice";
 import Logo from "./Logo";
 import React from "react";
 import { LinkButton } from "./Button";
@@ -22,6 +23,13 @@ const NavContainer = styled("header")`
 	width: 100%;
 	top: 0px;
 `;
+
+const Tab = styled("button")`
+	@media (min-width: 48rem) {
+		display: none;
+	}
+`;
+
 const NavBar = React.forwardRef((props, ref) => {
 	const { loading, data } = useQuery(GetMeDocument);
 	const [logoutUser] = useMutation(LogoutUserDocument);
@@ -31,6 +39,9 @@ const NavBar = React.forwardRef((props, ref) => {
 		id: state.user.id,
 		username: state.user.username,
 	}));
+	const handleTopicController = () => {
+		dispatch(toggle());
+	};
 
 	function handleLogout(): void {
 		logoutUser().then(() => dispatch(removeUser()));
@@ -60,6 +71,7 @@ const NavBar = React.forwardRef((props, ref) => {
 
 	return (
 		<NavContainer>
+			<Tab onClick={handleTopicController}>Rooms</Tab>
 			<Logo />
 			{renderNavOptions()}
 		</NavContainer>

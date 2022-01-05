@@ -2,7 +2,6 @@ import MainWrapper from "../components/MainWrapper";
 import NavBar from "../components/NavBar";
 import ChatCard from "../components/ChatCard";
 import TopicController from "../components/TopicController";
-import Footer from "../components/Footer";
 import Head from "next/head";
 function HomePage() {
 	return (
@@ -18,7 +17,6 @@ function HomePage() {
 				<TopicController />
 				<ChatCard />
 			</MainWrapper>
-			<Footer />
 		</>
 	);
 }

@@ -13,7 +13,7 @@ export const asideSlice = createSlice({
 	initialState,
 	reducers: {
 		toggle: (state) => {
-			state.open = !state.open;
+			state.open = true;
 		},
 	},
 });

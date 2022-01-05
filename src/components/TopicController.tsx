@@ -1,8 +1,8 @@
-import { useEffect, useLayoutEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../helpers/hooks";
 import { enterRoom } from "../helpers/roomSlice";
-import { toggle } from "../helpers/asideSlice";
+
 import { AppState } from "../helpers/store";
 import { ControllerButton } from "./Button";
 const Wrapper = styled("aside")`
@@ -68,7 +68,7 @@ const SideBar = () => {
 		aside: state.aside.open,
 	}));
 
-	const [currentRoom, setCurrentRoom] = useState<string>("0");
+	const [currentRoom, setCurrentRoom] = useState<string>("1");
 	const handleRoom = (roomId: string) => {
 		dispatch(
 			enterRoom({
@@ -76,19 +76,12 @@ const SideBar = () => {
 			})
 		);
 	};
-	const handleTopicController = () => {
-		dispatch(toggle());
-	};
 
 	useEffect(() => {
-		if (!room.id) {
-			setCurrentRoom("0");
-		} else {
-			setCurrentRoom(room.id);
-		}
+		setCurrentRoom(room.id);
 	}, [room.id]);
 
-	const rooms = [...Array(10).keys()];
+	const rooms = [...new Array(10).keys()].map((_, id) => id + 1);
 	return (
 		<>
 			<Wrapper
@@ -114,7 +107,6 @@ const SideBar = () => {
 					)}
 				</ActionWrapper>
 			</Wrapper>
-			<Tab onClick={handleTopicController}>Open</Tab>
 		</>
 	);
 };

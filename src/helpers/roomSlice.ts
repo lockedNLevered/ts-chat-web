@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IRoom {
-	id: string | null;
+	id: string;
 }
 
 const initialState: IRoom = {
-	id: null,
+	id: "1",
 };
 
 export const userSlice = createSlice({
@@ -16,7 +16,7 @@ export const userSlice = createSlice({
 			state.id = action.payload.id;
 		},
 		leaveRoom: (state) => {
-			state.id = null;
+			state.id = "1";
 		},
 	},
 });
