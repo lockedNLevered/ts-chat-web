@@ -10,40 +10,14 @@ import ChatMessage from "./ChatMessage";
 import { useAppSelector } from "../helpers/hooks";
 import { AppState } from "../helpers/store";
 import ChatForm from "./ChatForm";
+import { FeedWrapper } from "./FeedWrapper";
+import { ChatWrapper } from "./ChatWrapper";
 
 const Wrapper = styled("section")`
 	flex-grow: 1;
 	height: 80vh;
 	position: relative;
 	width: 100%;
-`;
-
-const FeedWrapper = styled("div")`
-	height: 70vh;
-	overflow-y: scroll;
-	scroll-snap-type: y;
-	::-webkit-scrollbar {
-		width: 0.9375rem;
-	}
-
-	::-webkit-scrollbar-track {
-		background-color: ${({ theme }) => theme.colors.white};
-	}
-
-	::-webkit-scrollbar-thumb {
-		background-color: ${({ theme }) => theme.colors.primary};
-		border-radius: 0.5rem;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		opacity: 0.7;
-	}
-`;
-
-const ChatWrapper = styled("div")`
-	display: flex;
-	flex-direction: column-reverse;
-	scroll-snap-align: end;
 `;
 
 export default function ChatCard() {
